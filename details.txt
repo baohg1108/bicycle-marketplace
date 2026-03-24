@@ -1,0 +1,2 @@
+Lenh de create migration: php artisan make: migration create_<table_name>_table
+run : php artisan migrate
