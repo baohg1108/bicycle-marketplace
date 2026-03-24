@@ -601,3 +601,7 @@ CREATE TABLE chatbot_messages (
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (session_id) REFERENCES chatbot_sessions(id) ON DELETE CASCADE
 );
+
+-- link ảnh ERD
+https://app.diagrams.net/?src=about#G1i_WCWrBs-neCw71StamK8vSoS11m9lgw#%7B%22pageId%22%3A%22UOgwQgM0UyCYD0DGufqF%22%7D
+
