@@ -8,22 +8,30 @@
             </div>
             <div class="card-body p-0">
                 <p>You can edit account here.</p>
-                <form method="post" name="enq">
+                <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
                     <div class="row mt-30">
-                        <div class="form-group col-md-12">
-                            <label>Name <span class="required">*</span></label>
-                            <input required="" class="form-control" name="name" type="text" />
-                        </div>
+
+                        <x-input-image name="avatar" :image="auth('web')->user()->avatar" />
 
                         <div class="form-group col-md-12">
-                            <label>Email Address <span class="required">*</span></label>
-                            <input required="" class="form-control" name="email" type="email" />
+                            <label>Name <span class="required">*</span></label>
+                            <input required="" class="form-control" name="name" type="text"
+                                value="{{ auth('web')->user()->name }}" />
+                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+
+                            <div class="form-group col-md-12">
+                                <label>Email Address <span class="required">*</span></label>
+                                <input required="" class="form-control" name="email" type="email"
+                                    value="{{ auth('web')->user()->email }}" />
+                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                            </div>
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-fill-out submit font-weight-bold" name="submit"
+                                    value="Submit">Save Change</button>
+                            </div>
                         </div>
-                        <div class="col-md-12">
-                            <button type="submit" class="btn btn-fill-out submit font-weight-bold" name="submit"
-                                value="Submit">Save Change</button>
-                        </div>
-                    </div>
                 </form>
             </div>
         </div>
@@ -35,19 +43,27 @@
             </div>
             <div class="card-body p-0">
                 <p>You can change password here.</p>
-                <form method="post" name="enq">
+                <form method="post" action="{{ route('password.update') }}">
+                    @csrf
+                    @method('PUT')
                     <div class="row mt-30">
                         <div class="form-group col-md-12">
                             <label>Current Password <span class="required">*</span></label>
-                            <input required="" class="form-control" name="password" type="password" />
+                            <input required="" class="form-control" name="current_password" type="password" />
+                            <x-input-error :messages="$errors->get('current_password')" class="mt-2" />
                         </div>
                         <div class="form-group col-md-12">
                             <label>New Password <span class="required">*</span></label>
-                            <input required="" class="form-control" name="npassword" type="password" />
+                            <input required="" class="form-control" name="password" type="password" />
+                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+
                         </div>
                         <div class="form-group col-md-12">
                             <label>Confirm Password <span class="required">*</span></label>
-                            <input required="" class="form-control" name="cpassword" type="password" />
+                            <input required="" class="form-control" name="password_confirmation" type="password" />
+                            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+
+
                         </div>
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-fill-out submit font-weight-bold" name="submit"
@@ -59,3 +75,18 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $.uploadPreview({
+                input_field: "#image-upload", // Default: .image-upload
+                preview_box: "#image-preview", // Default: .image-preview
+                label_field: "#image-label", // Default: .image-label
+                label_default: "Choose File", // Default: Choose File
+                label_selected: "Change File", // Default: Change File
+                no_label: false // Default: false
+            });
+        });
+    </script>
+@endpush
