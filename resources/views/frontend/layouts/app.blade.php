@@ -16,9 +16,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Template CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/global/upload-preview/upload-preview.css') }}" />
+    {{-- Template CSS  --}}
     <link rel="stylesheet" href="{{ asset('assets/frontend/dist/css/main.css') }}" />
+
+    @stack('styles')
 </head>
 
 <body>
@@ -118,11 +120,11 @@
             </div>
         </div>
     </div>
-   {{-- header --}}
+    {{-- header --}}
     @include('frontend.layouts.header')
 
     <main class="main">
-       @yield('contents')
+        @yield('contents')
     </main>
 
     @include('frontend.layouts.footer')
@@ -131,7 +133,7 @@
         <div class="preloader d-flex align-items-center justify-content-center">
             <div class="preloader-inner position-relative">
                 <div class="text-center">
-                    <img src="{{ asset('assets/frontend/dist/imgs/theme/loading.gif')}}" alt="" />
+                    <img src="{{ asset('assets/frontend/dist/imgs/theme/loading.gif') }}" alt="" />
                 </div>
             </div>
         </div>
@@ -163,9 +165,11 @@
     <script src="{{ asset('assets/frontend/dist/js/plugins/leaflet.js') }}"></script>
     <script src="{{ asset('assets/frontend/dist/js/plugins/TweenMax.min.js') }}"></script>
     <script src="{{ asset('assets/global/upload-preview/upload-preview.min.js') }}"></script>
+    <script src="{{ asset('assets/global/upload-preview.min.js') }}"></script>
     <!-- Template  JS -->
-    <script src="{{ asset('assets/frontend/dist/js/main.js')}}"></script>
-    <script src="{{ asset('assets/frontend/dist/js/shop.js')}}"></script>
+    <script src="{{ asset('assets/frontend/dist/js/main.js') }}"></script>
+    <script src="{{ asset('assets/frontend/dist/js/shop.js') }}"></script>
+    @stack('scripts')
 </body>
 
 </html>
