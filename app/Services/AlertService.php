@@ -2,7 +2,7 @@
 namespace App\Services;
 class AlertService{
 
-public static function update($message = null)
+public static function updated($message = null)
 {
     notyf()->success($message ? $message: 'Cập nhật thành công!');
 }
