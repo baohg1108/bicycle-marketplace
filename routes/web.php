@@ -23,6 +23,7 @@ Route::put('/profile/password', [ProfileController::class, 'passwordUpdate'])->n
 
 // KYC route
 Route::get('/kyc-verification', [KycController::class, 'index'])->name('kyc.index');
+Route::post('/kyc-verification', [KycController::class, 'store'])->name('kyc.store');
 
 });
 
