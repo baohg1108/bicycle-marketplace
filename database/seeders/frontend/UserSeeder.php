@@ -16,7 +16,14 @@ class UserSeeder extends Seeder
         $user = User::create([
             'name' => 'Test user',
             'email' => 'user1@gmail.com',
-            'password' => bcrypt('123456789')
+            'password' => bcrypt('1234')
+        ]);
+
+        User::create([
+            'name' => 'Vendor User',
+            'email' => 'vendor@gmail.com',
+            'password' => bcrypt('1234'),
+            'user_type' => 'vendor'
         ]);
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('rejected_reason')->nullable();
-            $table->timestamp('varified_at');
+            $table->timestamp('varified_at')->nullable();
             $table->string('full_name');
             $table->string('date_of_birth');
             $table->enum('gender', ['male', 'female']);
