@@ -15,10 +15,15 @@ class KycController extends Controller
 {
     use FileUploadTrait;
 
-    function index() : View
+    function index() : View | RedirectResponse
     {
+         if(auth('web')->user()->kyc?->status == 'approved' || auth('web')->user()->kyc?->status == 'pending') {
+            return redirect()->route('vendor.dashboard');
+        }
         return view('frontend.page.kyc');
     }
+
+   
 
      function store(Request $request): RedirectResponse
     {
@@ -48,6 +53,8 @@ class KycController extends Controller
         $kyc->document_scan_copy = $filePath;
 
         $kyc->save();
+
+        
 
         AlertService::created('Your KYC has been submitted successfully! Please wait for admin approval.');
 

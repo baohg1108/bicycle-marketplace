@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\CheckKycStatus;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\Role;
@@ -21,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
         'auth' => Authenticate::class,
         'guest' => RedirectIfAuthenticated::class,
+        'kyc_verified' => CheckKycStatus::class,
         'user_role' => Role::class,
         ]);
     })
