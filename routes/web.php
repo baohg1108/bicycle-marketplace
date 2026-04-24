@@ -3,6 +3,7 @@
 use App\Http\Controllers\frontend\KycController;
 use App\Http\Controllers\Frontend\UserDashboardController;
 use App\Http\Controllers\Frontend\ProfileController;
+use App\Http\Controllers\Frontend\StoreController;
 use App\Http\Controllers\Frontend\VendorDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +31,8 @@ Route::post('/kyc-verification', [KycController::class, 'store'])->name('kyc.sto
 //Vendor route
 Route::group(['prefix' => 'vendor', 'as' => 'vendor.', 'middleware' => ['auth', 'verified', 'user_role:vendor']], function () {
     Route::get('/dashboard', [VendorDashboardController::class, 'index'])->name('dashboard');
-
+    // shop Profile
+    Route::resource('store-profile', StoreController::class);
 });
 
 require __DIR__.'/auth.php';

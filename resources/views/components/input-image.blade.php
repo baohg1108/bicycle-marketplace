@@ -1,7 +1,8 @@
  @props(['name', 'image'])
 
- <div style="background-image: url({{ $image }}); background-size: cover"
-     {{ $attributes->merge(['id' => 'image-preview', 'class' => 'ml-2 mb-2']) }}>
-     <label for="image-upload" id="image-label">Choose File</label>
-     <input type="file" name="{{ $name }}" id="image-upload" />
+ <div id="{{ $imagePreviewId }}"
+     style="background-image: url({{ $image }});background-position:center; background-size: cover"
+     {{ $attributes->merge(['class' => 'ml-2 mb-2 image-preview']) }}>
+     <label for="{{ $imageUploadId }}" id="{{ $imageLabelId }}">Choose File</label>
+     <input type="file" name="{{ $name }}" id="{{ $imageUploadId }}" />
  </div>
