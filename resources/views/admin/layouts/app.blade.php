@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>Dashboard</title>
     <!-- BEGIN PAGE LEVEL STYLES -->
     {{-- <link href="./dist/libs/jsvectormap/dist/jsvectormap.css?1750026893" rel="stylesheet" /> --}}
@@ -65,6 +66,7 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/admin/dist/js/tabler.min.js') }}" defer></script>
     <script src="{{ asset('assets/global/upload-preview/upload-preview.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/admin/dist/js/tinymce/tinymce.min.js') }}"></script>
     @include('admin.layouts.scripts')
     @stack('scripts')
