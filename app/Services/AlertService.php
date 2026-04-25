@@ -11,4 +11,8 @@ public static function created($message = null)
 {
     notyf()->success($message ? $message: 'Tạo thành công!');
 }
+public static function deleted() : void
+{
+    notyf()->success('Xóa thành công.');
+}
 }
