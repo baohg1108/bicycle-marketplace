@@ -4,9 +4,9 @@
     <div class="container-xl">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">All Role</h3>
+                <h3 class="card-title">All Role User</h3>
                 <div class="card-actions">
-                    <a href="{{ route('admin.role.create') }}" class="btn btn-primary">Create Role</a>
+                    <a href="{{ route('admin.role-users.create') }}" class="btn btn-primary">Create User</a>
                 </div>
             </div>
             <div class="card-body p-0">
@@ -15,22 +15,28 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Role Name</th>
-                                <th>Permissions</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
                                 <th class="w-1"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($roles as $role)
+                            @forelse ($admins as $admin)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $role->name }}</td>
-                                    <td><span class="badge bg-primary-lt">{{ $role->permissions_count }}</span></td>
+                                    <td>{{ $admin->name }}</td>
+                                    <td>{{ $admin->email }}</td>
                                     <td>
-                                        @if ($role->name != 'Super Admin')
-                                            <a href="{{ route('admin.role.edit', $role) }}">Edit</a>
+                                        @foreach ($admin->getRoleNames() as $role)
+                                            <span class="badge bg-primary-lt">{{ $role }}</span>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @if (!$admin->hasRole('Super Admin'))
+                                            <a href="{{ route('admin.role-users.edit', $admin) }}">Edit</a>
                                             <a class="text-danger delete-item"
-                                                href="{{ route('admin.role.destroy', $role) }}">Delete</a>
+                                                href="{{ route('admin.role-users.destroy', $admin) }}">Delete</a>
                                         @endif
                                     </td>
                                 </tr>

@@ -15,4 +15,8 @@ public static function deleted() : void
 {
     notyf()->success('Xóa thành công.');
 }
+public static function error($message) : void
+{
+    notyf()->error($message ? $message : 'Đã xảy ra lỗi.');
+}
 }
