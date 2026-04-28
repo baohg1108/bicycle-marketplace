@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Providers;
 
 use App\Services\SettingSevice;
@@ -12,7 +11,7 @@ class SettingSeviceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(SettingSevice::class, fn () => new SettingSevice());
+        $this->app->singleton(SettingSevice::class, fn() => new SettingSevice());
     }
 
     /**
