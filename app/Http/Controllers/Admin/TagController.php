@@ -23,13 +23,13 @@ class TagController extends Controller implements HasMiddleware
     public function index()
     {
         $tags = Tag::paginate(20);
-        return view("admin.tag.index", compact("tags"));
+        return view("admin.tags.index", compact("tags"));
     }
 
     //
     public function create()
     {
-        return view("admin.tag.create");
+        return view("admin.tags.create");
     }
 
     //
@@ -56,7 +56,7 @@ class TagController extends Controller implements HasMiddleware
     public function edit(Tag $tag)
     {
         //
-        return view("admin.tag.edit", compact("tag"));
+        return view("admin.tags.edit", compact("tag"));
     }
 
     public function update(Request $request, Tag $tag)
