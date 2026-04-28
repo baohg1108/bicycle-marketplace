@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserRoleController;
 use App\Http\Controllers\Admin\TagController;
 use App\Models\Tag;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:admin')
@@ -85,6 +86,9 @@ Route::middleware('auth:admin')
     // Tags Routes
     Route::resource("/tags", TagController::class);
 
+    // setting
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings/general-settings', [SettingController::class, 'generalSettings'])->name('settings.general');
 });
 
 Route::get('/admin/dashboard', function () {
