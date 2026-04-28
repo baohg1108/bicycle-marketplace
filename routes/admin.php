@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\KycRequestController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserRoleController;
+use App\Http\Controllers\Admin\TagController;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:admin')
@@ -79,6 +81,9 @@ Route::middleware('auth:admin')
     // Role Routes
     Route::resource('/role', RoleController::class);
     Route::resource('/role-users', UserRoleController::class);
+
+    // Tags Routes
+    Route::resource("/tags", TagController::class);
 
 });
 
