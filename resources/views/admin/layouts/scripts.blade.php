@@ -66,13 +66,31 @@
             });
         });
     })
-    // select2 init
-    // In your Javascript (external .js resource or <script> tag)
-    $(document).ready(function() {
-                $('.select2').select2();
 
-                // notyf init
-                var notyf = new Notyf({
-                    duration: 3000
+    // notyf init
+    var notyf = new Notyf({
+        duration: 3000
+    });
+    // select2 init
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+
+    // datepicker init
+    document.addEventListener("DOMContentLoaded", function() {
+
+        if (window.Litepicker) {
+            document.querySelectorAll('.datepicker').forEach((elem) => {
+                new Litepicker({
+                    element: elem,
+                    buttonText: {
+                        previousMonth: `<!-- Download SVG icon from http://tabler.io/icons/icon/chevron-left -->
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M15 6l-6 6l6 6" /></svg>`,
+                        nextMonth: `<!-- Download SVG icon from http://tabler.io/icons/icon/chevron-right -->
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M9 6l6 6l-6 6" /></svg>`,
+                    },
                 });
+            })
+        }
+    });
 </script>

@@ -25,11 +25,11 @@ return new class extends Migration
             $table->date("special_price_start")->nullable();
             $table->date("special_price_end")->nullable();
             $table->string("sku")->nullable();
-            $table->enum("manage_stock", ["yes", "no"])->default("no")->nullable();
+            $table->enum("manage_stock", ["yes", "no"])->nullable();
             $table->integer("qty")->nullable();
             $table->boolean("in_stock")->nullable();
             $table->integer("viewed")->nullable();
-            $table->enum("status", ["active", "inactive", "draft"])->nullable();
+            $table->enum("status", ["active", "inactive", "draft", 'pending'])->nullable();
             $table->boolean("is_featured")->nullable();
             $table->boolean("is_hot")->nullable();
             $table->boolean("is_new")->nullable();
