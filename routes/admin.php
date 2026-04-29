@@ -97,7 +97,7 @@ Route::middleware('auth:admin')
     // setting
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings/general-settings', [SettingController::class, 'generalSettings'])->name('settings.general');
-});
+    
         // Brand Routes
         Route::resource("/brands", BrandController::class);
         // setting
