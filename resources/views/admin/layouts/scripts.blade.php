@@ -66,10 +66,13 @@
             });
         });
     })
-
     // select2 init
     // In your Javascript (external .js resource or <script> tag)
     $(document).ready(function() {
-        $('.select2').select2();
-    });
+                $('.select2').select2();
+
+                // notyf init
+                var notyf = new Notyf({
+                    duration: 3000
+                });
 </script>

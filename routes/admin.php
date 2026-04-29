@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\KycRequestController;
 use App\Http\Controllers\Admin\ProductController;
@@ -85,6 +86,19 @@ Route::middleware('auth:admin')
         // Tags Routes
         Route::resource("/tags", TagController::class);
 
+    // category route
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categories/nested', [CategoryController::class, 'getNestedCategories'])->name('categories.nested');
+    Route::post('/categories/update-order', [CategoryController::class, 'updateOrder'])->name('categories.update-order');
+    Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
+    Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+    // setting
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings/general-settings', [SettingController::class, 'generalSettings'])->name('settings.general');
+    
         // Brand Routes
         Route::resource("/brands", BrandController::class);
 
