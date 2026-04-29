@@ -225,40 +225,25 @@
                     </a>
                 </li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
-                        data-bs-auto-close="false" role="button" aria-expanded="false">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="ti ti-shield"></i>
-                        </span>
-                        <span class="nav-link-title">Ecommerce</span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-menu-columns">
-                            @if (hasPermission(['Role Management']))
-                                <div class="dropdown-menu-column">
-                                    <a class="dropdown-item" href="{{ route('admin.categories.index') }}">
-                                        Categories
-                                    </a>
-                                </div>
-                            @endif
-
-
-                        </div>
-                    </div>
-                </li>
-{{-- Ecommerce: ========================================== Categories + Tags + Brand ========================================== --}}
-                  @if (hasPermission(['Category Management', 'Tags Management', 'Brands Management']))
+                {{-- Ecommerce --}}
+                @if (hasPermission(['Category Management', 'Tags Management', 'Brands Management']))
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <i class="ti ti-shield"></i>
                             </span>
                             <span class="nav-link-title">Ecommerce</span>
                         </a>
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
-
+                                @if (hasPermission(['Category Management']))
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item" href="{{ route('admin.categories.index') }}">
+                                            Categories
+                                        </a>
+                                    </div>
+                                @endif
                                 @if (hasPermission(['Tags Management']))
                                     <div class="dropdown-menu-column">
                                         <a class="dropdown-item" href="{{ route('admin.tags.index') }}">
@@ -266,7 +251,6 @@
                                         </a>
                                     </div>
                                 @endif
-
                                 @if (hasPermission(['Brands Management']))
                                     <div class="dropdown-menu-column">
                                         <a class="dropdown-item" href="{{ route('admin.brands.index') }}">
@@ -274,7 +258,6 @@
                                         </a>
                                     </div>
                                 @endif
-
                             </div>
                         </div>
                     </li>
