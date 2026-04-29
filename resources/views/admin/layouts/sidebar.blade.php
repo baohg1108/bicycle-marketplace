@@ -247,6 +247,38 @@
                         </div>
                     </div>
                 </li>
+{{-- Ecommerce: ========================================== Categories + Tags + Brand ========================================== --}}
+                  @if (hasPermission(['Category Management', 'Tags Management', 'Brands Management']))
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                            data-bs-auto-close="false" role="button" aria-expanded="false">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            </span>
+                            <span class="nav-link-title">Ecommerce</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-menu-columns">
+
+                                @if (hasPermission(['Tags Management']))
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item" href="{{ route('admin.tags.index') }}">
+                                            Product Tags
+                                        </a>
+                                    </div>
+                                @endif
+
+                                @if (hasPermission(['Brands Management']))
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item" href="{{ route('admin.brands.index') }}">
+                                            Product Brands
+                                        </a>
+                                    </div>
+                                @endif
+
+                            </div>
+                        </div>
+                    </li>
+                @endif
 
                 @if (hasPermission(['KYC Management']))
                     <li class="nav-item dropdown">
@@ -344,6 +376,8 @@
                         </div>
                     </div>
                 </li> --}}
+
+
 
             </ul>
             <!-- END NAVBAR MENU -->
