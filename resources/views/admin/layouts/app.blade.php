@@ -13,6 +13,8 @@
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.34.0/dist/tabler-icons.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
     <link rel="stylesheet" href="{{ asset('assets/global/upload-preview/upload-preview.css') }}" />
     <link href="{{ asset('assets/admin/dist/css/tabler.css') }}" rel="stylesheet" />
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -69,6 +71,8 @@
     <script src="{{ asset('assets/admin/dist/js/tabler.min.js') }}" defer></script>
     <script src="{{ asset('assets/global/upload-preview/upload-preview.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nestable2/1.6.0/jquery.nestable.min.js"></script>
     <script src="{{ asset('assets/admin/dist/js/tinymce/tinymce.min.js') }}"></script>
     @include('admin.layouts.scripts')
     @stack('scripts')

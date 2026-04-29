@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\Auth\PasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\KycRequestController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
@@ -80,6 +81,15 @@ Route::middleware('auth:admin')
     // Role Routes
     Route::resource('/role', RoleController::class);
     Route::resource('/role-users', UserRoleController::class);
+
+    // category route
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categories/nested', [CategoryController::class, 'getNestedCategories'])->name('categories.nested');
+    Route::post('/categories/update-order', [CategoryController::class, 'updateOrder'])->name('categories.update-order');
+    Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
+    Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
     // setting
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
