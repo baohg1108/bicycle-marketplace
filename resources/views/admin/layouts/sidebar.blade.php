@@ -225,8 +225,8 @@
                     </a>
                 </li>
 
-{{-- Ecommerce: ========================================== Categories + Tags + Brand ========================================== --}}
-                  @if (hasPermission(['Category Management', 'Tags Management', 'Brands Management']))
+                {{-- Ecommerce: ========================================== Categories + Tags + Brand ========================================== --}}
+                @if (hasPermission(['Category Management', 'Tags Management', 'Brands Management']))
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -236,6 +236,14 @@
                         </a>
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
+
+                                @if (hasPermission(['Tags Management']))
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item" href="{{ route('admin.products.index') }}">
+                                            Products
+                                        </a>
+                                    </div>
+                                @endif
 
                                 @if (hasPermission(['Tags Management']))
                                     <div class="dropdown-menu-column">
