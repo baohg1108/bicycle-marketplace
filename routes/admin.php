@@ -8,8 +8,8 @@ use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\KycRequestController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -86,19 +86,19 @@ Route::middleware('auth:admin')
         // Tags Routes
         Route::resource("/tags", TagController::class);
 
-    // category route
-    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
-    Route::get('/categories/nested', [CategoryController::class, 'getNestedCategories'])->name('categories.nested');
-    Route::post('/categories/update-order', [CategoryController::class, 'updateOrder'])->name('categories.update-order');
-    Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
-    Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+        // category route
+        Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+        Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+        Route::get('/categories/nested', [CategoryController::class, 'getNestedCategories'])->name('categories.nested');
+        Route::post('/categories/update-order', [CategoryController::class, 'updateOrder'])->name('categories.update-order');
+        Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
+        Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
-    // setting
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::put('/settings/general-settings', [SettingController::class, 'generalSettings'])->name('settings.general');
-    
+        // setting
+        Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::put('/settings/general-settings', [SettingController::class, 'generalSettings'])->name('settings.general');
+
         // Brand Routes
         Route::resource("/brands", BrandController::class);
 
@@ -106,6 +106,11 @@ Route::middleware('auth:admin')
         Route::get("/products", [ProductController::class, 'index'])->name("products.index");
         Route::get("/products/physical/create", [ProductController::class, 'create'])->name("products.create");
         Route::post("/products/physical/create", [ProductController::class, 'store'])->name("products.store");
+        Route::get("/products/physical/{product}/edit", [ProductController::class, 'edit'])->name("products.edit");
+        Route::post("/products/images/upload/{product}", [ProductController::class, 'uploadImages'])->name("products.images.upload");
+        Route::delete("/products/images/{image}", [ProductController::class, 'destroyImage'])->name("products.images.destroy");
+
+        Route::post("/products/images/reorder", [ProductController::class, 'imagesReorder'])->name("products.images.reorder");
 
         // setting
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
