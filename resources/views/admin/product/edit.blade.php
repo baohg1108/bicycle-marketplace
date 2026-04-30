@@ -231,6 +231,28 @@
                         </div>
                     </div>
 
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Product Image</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <div id="imageUploader" class="dropzone">
+                                        <div id="imagePreviewContainer" class="image-preview-container">
+                                            @foreach ($product?->images ?? [] as $image)
+                                                <div class="image-preview-item" data-image-id="{{ $image->id }}">
+                                                    <img src="{{ asset($image->path) }}">
+                                                    <span class="remove-image"
+                                                        data-image-id="{{ $image->id }}">&times;</span>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -514,12 +536,8 @@
                     success: function(response) {
 
                         if (response.status == 'success') {
-                            // Initialize image uploader with the new product ID
-                            imageUploadProductId = response.id;
-                            if (!imageUploader) {
-                                initImageUploader();
-                            }
-                            notyf.success('Product created successfully');
+                            window.location.href =
+                                "{{ route('admin.products.edit', ':id') }}.replace(':id', response.id) }}";
                         }
                     },
                     error: function(xhr, status, error) {
@@ -533,5 +551,124 @@
                 })
             });
         });
+
+        // dropzone images upload
+        Dropzone.autoDiscover = false;
+        let imageUploader = null;
+
+        function initImageUploader() {
+            imageUploader = new Dropzone('#imageUploader', {
+                url: "{{ route('admin.products.images.upload', ':id') }}".replace(':id', imageUploadProductId),
+                paramName: 'file',
+                maxFileSize: 10, // MB
+                acceptedFiles: 'image/*',
+                addRemoveLinks: false,
+                uploadMultiple: false,
+                autoProcessQueue: true,
+                previewsContainer: false,
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                init: function() {
+                    this.on("addedfile", function(file) {
+                        const placeholderId = "upload-" + Date.now();
+                        addUploadPlaceholder(placeholderId);
+                        file.placeholderId = placeholderId;
+                    })
+
+                    this.on("success", function(file, response) {
+                        $(`#${file.placeholderId}`).remove();
+                        addImagePreview(response.path, response.id);
+                        this.removeFile(file);
+                    })
+
+                    this.on("error", function(file, errorMessage, xhr) {
+                        console.log('Dropzone error:', errorMessage);
+                        console.log('XHR response:', xhr);
+                        $(`#${file.placeholderId}`).remove();
+                    })
+
+                }
+            });
+        }
+
+        let imageUploadProductId = null;
+
+
+        function addUploadPlaceholder(placeholderId) {
+            const placeholderHtml = `
+            <div class="image-preview-item" id="${placeholderId}">
+                <div class="image-preview-loader"></div>
+            </div>
+        `;
+
+            $('#imagePreviewContainer').append(placeholderHtml);
+        }
+
+        function addImagePreview(path, id) {
+            const placeholderHtml = `
+            <div class="image-preview-item" data-image-id="${id}">
+                <img src="${path}">
+                <span class="remove-image"  data-image-id="${id}">&times;</span>
+            </div>
+        `;
+
+            $('#imagePreviewContainer').append(placeholderHtml);
+        }
+
+        $(document).on("click", ".remove-image", function() {
+            const imageId = $(this).attr("data-image-id");
+            const element = this;
+            $.ajax({
+                method: "DELETE",
+                url: `{{ route('admin.products.images.destroy', ':id') }}`.replace(':id', imageId),
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    notyf.success("Image deleted successfully");
+                    $(element).closest(".image-preview-item").remove();
+                },
+                error: function(xhr, status, error) {
+                    notyf.error("Failed to delete image");
+                }
+            })
+        })
+
+        // init sortable
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        new Sortable(imagePreviewContainer, {
+            animation: 150,
+            onEnd: function() {
+                console.log("dragged")
+            }
+        })
+
+        function updateImageOrder() {
+            const imageOrder = [];
+            $(`.image-preview-item`).each(function(index) {
+                imageOrder.push({
+                    id: $(this).attr("image-id"),
+                    order: index
+                });
+            });
+
+            $.ajax({
+                url: "{{ route('admin.products.images.reorder') }}",
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                data: {
+                    images: imageOrder
+                },
+                success: function(response) {
+                    notyf.success("Image order updated");
+                },
+                error: function(xhr, status, error) {
+                    notyf.error("Failed to update image order");
+                }
+            })
+        }
     </script>
 @endpush
