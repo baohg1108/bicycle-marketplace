@@ -240,23 +240,22 @@
                     </div>
 
                     {{-- Product Images --}}
-                    <div class="card" id="product-images">
+                    <div class="card mt-3" id="product-images">
                         <div class="card-header">
                             <h3 class="card-title">Product Image</h3>
                         </div>
                         <div class="card-body">
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <div id="imageUploader" class="dropzone">
-                                        <div id="imagePreviewContainer" class="image-preview-container">
-                                            @foreach ($product?->images ?? [] as $image)
-                                                <div class="image-preview-item" data-image-id="{{ $image->id }}">
-                                                    <img src="{{ asset($image->path) }}">
-                                                    <span class="remove-image"
-                                                        data-image-id="{{ $image->id }}">&times;</span>
-                                                </div>
-                                            @endforeach
-                                        </div>
+                                    <div id="imageUploader" class="dropzone"></div>
+                                    <div id="imagePreviewContainer" class="image-preview-container">
+                                        @foreach ($product?->images ?? [] as $image)
+                                            <div class="image-preview-item" data-image-id="{{ $image->id }}">
+                                                <img src="{{ asset($image->path) }}">
+                                                <span class="remove-image"
+                                                    data-image-id="{{ $image->id }}">&times;</span>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -271,7 +270,12 @@
                         <div class="card-body">
                             <div class="col-md-12">
                                 <div class="accordion" id="accordion-default">
-
+                                    @foreach ($attributesWithValues as $attribute)
+                                        @include('admin.product.partials.attribute', [
+                                            'attribute' => $attribute,
+                                            'product' => $product,
+                                        ])
+                                    @endforeach
                                 </div>
                                 <button class="btn btn-primary mt-3" type="button" id="add-attribute-btn">Add
                                     Attribute</button>
@@ -544,8 +548,9 @@
             function initColorPickersInContainer(container) {
                 $(container).find('.color-preview').each(function() {
                     const $this = $(this);
-                    const currentColor = $this.css("background-color") || "#000000";
-                    createPicker(pickerId, currentColor, `input[data-picker-id]=${pickerId}`);
+                    const pickerId = $this.attr('id');
+                    const currentColor = $this.css('background-color') || '#oooooo';
+                    createPicker(pickerId, currentColor, `input[data-picker-id="${pickerId}"]`);
                 })
             }
 
@@ -575,64 +580,41 @@
                                                 style="padding: 5px; background: red; color: white; border-radius: 10px; margin-right: 10px;"><i
                                                     class="ti ti-trash"></i> </span>
                                         </div>
-                                        <div id="${collapseId}" class="accordion-collapse collapse"
-                                            data-bs-parent="#accordion-default" style="">
-                                            <div class="accordion-body">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="" class="form-label">Name</label>
-                                                        <input type="text" class="form-control" value=""
-                                                            name="">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="" class="form-label">Type</label>
-                                                        <select name="" class="form-control main-type" id="">
-                                                            <option value="text">Text</option>
-                                                            <option value="color">Color</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <table class="table table-bordered section-table mt-3" style="display: none">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Label</th>
-                                                            <th class="value-header">Value</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            {{-- <td colspan="2">
-                                                                <div
-                                                                    class="d-flex justify-content-between align-items-center">
-                                                                    <input type="text" class="form-control"
-                                                                        name="" placeholder="Label"></input>
-                                                                    <span class="review-row-btn ms-2"><i
-                                                                            class="ti ti-trash"></i></span>
-                                                                </div>
-                                                            </td> --}}
-                                                            {{-- <td> --}}
-                                                            {{-- <input type="text" class="form-control" name=""
-                                                                    id="" placeholder="Label"></input>
-                                                            </td>
-                                                            <td>
-                                                                <div class="picker">
-                                                                    <input type="hidden" class="color-value"
-                                                                        placeholder="Label"></input>
-                                                                    <span class="review-row-btn ms-2"><i
-                                                                            class="ti ti-trash"></i></span>
-                                                                </div>
-                                                            </td> --}}
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-
-                                                <div class="mt-2">
-                                                    <button class="btn btn-sm btn-primary add-row-btn" type="button">Add Row</button>
-                                                    <button class="btn btn-sm btn-success" type="button">Save</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <div id="${collapseId}" class="accordion-collapse collapse" data-bs-parent="#accordion-default" style="">
+        <div class="accordion-body">
+            <form action="" method="POST" >
+                @csrf
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="" class="form-label">Name</label>
+                    <input type="text" class="form-control" value="" name="attribute_name">
+                </div>
+                <div class="col-md-6">
+                    <label for="" class="form-label">Type</label>
+                    <select name="attribute_type" class="form-control main-type" id="">
+                        <option value="text">Text</option>
+                        <option value="color">Color</option>
+                    </select>
+                </div>
+            </div>
+            <table class="table table-bordered section-table mt-3" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Label</th>
+                        <th class="value-header">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div class="mt-2">
+                <button class="btn btn-sm btn-primary add-row-btn" type="button">Add Row</button>
+                <button class="btn btn-sm btn-success save-btn" type="button">Save</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
                 `;
 
                 $("#accordion-default").append(accordionItem);
@@ -652,23 +634,24 @@
                     rowHtml = `
                  <tr>
                        <td>
-                            <input type="text" class="form-control label-input" name="" id=""
+                            <input type="text" class="form-control label-input" name="label[]" id=""
                                 placeholder="Label"></input>
                         </td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 <div id="${pickerId}-preview" class="color-preview"></div>
-                                <input type="hidden" class="color-value" data-picker-id="${pickerId}"></input>
+                                <input type="hidden" class="color-value" data-picker-id="${pickerId}" name="color_value[]">
                                 <span class="review-row-btn ms-2"><i class="ti ti-trash"></i></span>
                             </div>
-                        </td></tr>
+                        </td>
+                </tr>
                         `
                 } else {
                     rowHtml = `
                      <tr>
                         <td colspan="2">
                             <div class="d-flex justify-content-between align-items-center">
-                                <input type="text" class="form-control label-input" name="" placeholder="Label"></input>
+                                <input type="text" class="form-control label-input" name="label[]" placeholder="Label"></input>
                                 <span class="review-row-btn ms-2"><i class="ti ti-trash"></i></span>
                             </div>
                         </td>
@@ -728,13 +711,13 @@
                         rowHtml = `
                  <tr>
                        <td>
-                            <input type="text" class="form-control label-input" name="" id=""
+                            <input type="text" class="form-control label-input" name="label[]" id=""
                                 placeholder="Label" value="${label}"></input>
                         </td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 <div id="${pickerId}-preview" class="color-preview"></div>
-                                <input type="hidden" class="color-value" data-picker-id="${pickerId}" name=""></input>
+                                <input type="hidden" class="color-value" data-picker-id="${pickerId}" name="color_value[]"></input>
                                 <span class="review-row-btn ms-2"><i class="ti ti-trash"></i></span>
                             </div>
                         </td></tr>
@@ -744,7 +727,7 @@
                      <tr>
                         <td colspan="2">
                             <div class="d-flex justify-content-between align-items-center">
-                                <input type="text" class="form-control label-input" name="" placeholder="Label" value="${label}"></input>
+                                <input type="text" class="form-control label-input" name="label[]" placeholder="Label" value="${label}"></input>
                                 <span class="review-row-btn ms-2"><i class="ti ti-trash"></i></span>
                             </div>
                         </td>
@@ -766,6 +749,79 @@
                 } else {
                     table.hide();
                 }
+            });
+
+            $(document).on('click', '.delete-btn', function() {
+                const $accordionItem = $(this).closest('.accordion-item');
+                $accordionItem.find('.color-preview').each(function() {
+                    destroyPicker($(this).attr('id'));
+                });
+
+                const productId = $(this).data('product-id');
+                const attributeId = $(this).data('attribute-id');
+
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ route('admin.products.attributes.destroy', [':id', ':attribute_id']) }}"
+                                .replace(':id', productId).replace(':attribute_id',
+                                    attributeId),
+                            method: 'DELETE',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                $('#accordion-default').html(response.html);
+                                notyf.success(response.message);
+                            },
+                            error: function(xhr, status, error) {
+                                notyf.error(error);
+                            }
+                        })
+                    }
+                });
+            })
+
+            // save attribute
+            $(document).on('click', '.save-btn', function(e) {
+                e.preventDefault();
+                const form = $(this).closest('form');
+                const data = form.serialize();
+                console.log(data);
+
+                $.ajax({
+                    url: "{{ route('admin.products.attributes.store', ':id') }}".replace(':id',
+                        '{{ $product->id }}'),
+                    method: 'POST',
+                    data: data,
+                    success: function(response) {
+                        $('#accordion-default').html(response.html);
+                        // $('#accordion-variant').html('');
+                        // $('#accordion-variant').append(response.variantHtml);
+                        // response.html ? $('.disabled-placeholder').show() : $(
+                        //     '.disabled-placeholder').hide();
+
+                        initColorPickersInContainer($('#accordion-default'));
+                        notyf.success(response.message);
+                    },
+                    error: function(xhr, status, error) {
+
+                    }
+                })
+            })
+
+            // initialize color pickers on load
+            $(document).ready(function() {
+                initColorPickersInContainer($('#accordion-default'));
             })
         })
     </script>
@@ -864,45 +920,34 @@
 
         // dropzone images upload
         Dropzone.autoDiscover = false;
-        let imageUploader = null;
+        const imageUploader = new Dropzone("#imageUploader", {
+            url: "{{ route('admin.products.images.upload', ':id') }}".replace(':id', '{{ $product->id }}'),
+            pramName: "Image",
+            maxFileSize: 10,
+            acceptedFiles: "image/*",
+            addRemoveLinks: false,
+            autoProcessQueue: true,
+            uploadMultiple: false,
+            previewsContainer: false,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            init: function() {
+                this.on("addedfile", function(file) {
+                    const placeholderId = 'upload-' + Date.now();
+                    addUploadPlaceholder(placeholderId);
 
-        function initImageUploader() {
-            imageUploader = new Dropzone('#imageUploader', {
-                url: "{{ route('admin.products.images.upload', ':id') }}".replace(':id', imageUploadProductId),
-                paramName: 'file',
-                maxFileSize: 10, // MB
-                acceptedFiles: 'image/*',
-                addRemoveLinks: false,
-                uploadMultiple: false,
-                autoProcessQueue: true,
-                previewsContainer: false,
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                init: function() {
-                    this.on("addedfile", function(file) {
-                        const placeholderId = "upload-" + Date.now();
-                        addUploadPlaceholder(placeholderId);
-                        file.placeholderId = placeholderId;
-                    })
+                    file.placeholderId = placeholderId;
+                })
 
-                    this.on("success", function(file, response) {
-                        $(`#${file.placeholderId}`).remove();
-                        addImagePreview(response.path, response.id);
-                        this.removeFile(file);
-                    })
+                this.on("success", function(file, response) {
+                    $(`#${file.placeholderId}`).remove();
+                    addImagePreview(response.path, response.id);
+                    this.removeFile(file);
+                })
+            }
 
-                    this.on("error", function(file, errorMessage, xhr) {
-                        console.log('Dropzone error:', errorMessage);
-                        console.log('XHR response:', xhr);
-                        $(`#${file.placeholderId}`).remove();
-                    })
-
-                }
-            });
-        }
-
-        let imageUploadProductId = null;
+        })
 
 
         function addUploadPlaceholder(placeholderId) {
@@ -919,28 +964,28 @@
             const placeholderHtml = `
             <div class="image-preview-item" data-image-id="${id}">
                 <img src="${path}">
-                <span class="remove-image"  data-image-id="${id}">&times;</span>
+                <span class="remove-image" data-image-id="${id}">&times;</span>
             </div>
-        `;
+            `;
 
             $('#imagePreviewContainer').append(placeholderHtml);
         }
 
-        $(document).on("click", ".remove-image", function() {
-            const imageId = $(this).attr("data-image-id");
+        $(document).on('click', '.remove-image', function() {
+            const imageId = $(this).attr('data-image-id');
             const element = this;
             $.ajax({
-                method: "DELETE",
-                url: `{{ route('admin.products.images.destroy', ':id') }}`.replace(':id', imageId),
+                method: 'DELETE',
+                url: "{{ route('admin.products.images.destroy', ':id') }}".replace(':id', imageId),
                 headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    notyf.success("Image deleted successfully");
-                    $(element).closest(".image-preview-item").remove();
+                    notyf.success(response.message);
+                    $(element).closest('.image-preview-item').remove();
                 },
                 error: function(xhr, status, error) {
-                    notyf.error("Failed to delete image");
+                    notyf.error(error);
                 }
             })
         })
@@ -951,6 +996,7 @@
             animation: 150,
             onEnd: function() {
                 console.log("dragged")
+                updateImageOrder();
             }
         })
 
