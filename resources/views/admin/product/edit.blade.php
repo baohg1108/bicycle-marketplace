@@ -1,6 +1,7 @@
 @extends('admin.layouts.app')
 @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css" />
 
     <style>
         .dropzone {
@@ -238,6 +239,7 @@
                         </div>
                     </div>
 
+                    {{-- Product Images --}}
                     <div class="card" id="product-images">
                         <div class="card-header">
                             <h3 class="card-title">Product Image</h3>
@@ -260,8 +262,23 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
+                    {{-- Product Attributes --}}
+                    <div class="card mt-3" id="product-attributes">
+                        <div class="card-header">
+                            <h3 class="card-title">Product Attributes</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-md-12">
+                                <div class="accordion" id="accordion-default">
+
+                                </div>
+                                <button class="btn btn-primary mt-3" type="button" id="add-attribute-btn">Add
+                                    Attribute</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
                 <div class="col-md-4">
@@ -321,7 +338,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="card mb-3">
@@ -334,9 +350,7 @@
                                     <div class="mb-3">
                                         <input type="text" class="form-control" id="category-search"
                                             placeholder="Search Category">
-
                                     </div>
-
                                     <ul class="list-unstyled " id="category-tree">
                                         @foreach ($categories as $category)
                                             <li>
@@ -463,6 +477,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </form>
@@ -474,6 +489,287 @@
 @push('scripts')
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr"></script>
+
+    <script>
+        $(function() {
+
+            const pickerInstances = {};
+
+            let uniqueCounter = 0;
+
+            function generateUniqueId(prefix = "picker-") {
+                uniqueCounter++;
+                return prefix + uniqueCounter + "-" + Date.now();
+            }
+
+            function createPicker(pickerId, defaultColor, inputSelector) {
+                if (pickerInstances[pickerId]) {
+                    pickerInstances[pickerId].destroyAndRemove();
+                }
+
+                const picker = Pickr.create({
+                    el: `#${pickerId}`,
+                    theme: 'classic',
+                    default: defaultColor || '#42445A',
+                    components: {
+                        preview: true,
+                        opacity: true,
+                        hue: true,
+                        interaction: {
+                            hex: true,
+                            rgba: true,
+                            input: true,
+                            clear: true,
+                            save: true
+                        }
+                    }
+                });
+
+                picker.on("change", (color) => {
+                    const selectedColor = color.toHEXA().toString();
+                    $(`#${pickerId}`).css('background-color', selectedColor);
+                    $(`${inputSelector}`).val(selectedColor);
+                })
+                pickerInstances[pickerId] = picker;
+            }
+
+            function destroyPicker(pickerId) {
+                if (pickerInstances[pickerId]) {
+                    pickerInstances[pickerId].destroyAndRemove();
+                    delete pickerInstances[pickerId];
+                }
+            }
+
+            function initColorPickersInContainer(container) {
+                $(container).find('.color-preview').each(function() {
+                    const $this = $(this);
+                    const currentColor = $this.css("background-color") || "#000000";
+                    createPicker(pickerId, currentColor, `input[data-picker-id]=${pickerId}`);
+                })
+            }
+
+            let count = 0;
+            $("#add-attribute-btn").on("click", function() {
+                count++;
+                const collapseId = "collapse" + count;
+                const headerId = "header" + count;
+
+                const accordionItem = `
+                <div class="accordion-item" data-index="${count}">
+                                        <div class="accordion-header" id="${headerId}">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#${collapseId}" aria-control="${collapseId}" aria-expanded="false">
+                                                New Attribute #${count}
+                                                <div class="accordion-button-toggle">
+                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/chevron-down -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-1">
+                                                        <path d="M6 9l6 6l6 -6"></path>
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                            <span class="delete-btn"
+                                                style="padding: 5px; background: red; color: white; border-radius: 10px; margin-right: 10px;"><i
+                                                    class="ti ti-trash"></i> </span>
+                                        </div>
+                                        <div id="${collapseId}" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordion-default" style="">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label for="" class="form-label">Name</label>
+                                                        <input type="text" class="form-control" value=""
+                                                            name="">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="" class="form-label">Type</label>
+                                                        <select name="" class="form-control main-type" id="">
+                                                            <option value="text">Text</option>
+                                                            <option value="color">Color</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-bordered section-table mt-3" style="display: none">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Label</th>
+                                                            <th class="value-header">Value</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            {{-- <td colspan="2">
+                                                                <div
+                                                                    class="d-flex justify-content-between align-items-center">
+                                                                    <input type="text" class="form-control"
+                                                                        name="" placeholder="Label"></input>
+                                                                    <span class="review-row-btn ms-2"><i
+                                                                            class="ti ti-trash"></i></span>
+                                                                </div>
+                                                            </td> --}}
+                                                            {{-- <td> --}}
+                                                            {{-- <input type="text" class="form-control" name=""
+                                                                    id="" placeholder="Label"></input>
+                                                            </td>
+                                                            <td>
+                                                                <div class="picker">
+                                                                    <input type="hidden" class="color-value"
+                                                                        placeholder="Label"></input>
+                                                                    <span class="review-row-btn ms-2"><i
+                                                                            class="ti ti-trash"></i></span>
+                                                                </div>
+                                                            </td> --}}
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <div class="mt-2">
+                                                    <button class="btn btn-sm btn-primary add-row-btn" type="button">Add Row</button>
+                                                    <button class="btn btn-sm btn-success" type="button">Save</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                `;
+
+                $("#accordion-default").append(accordionItem);
+            })
+
+            $(document).on("click", ".add-row-btn", function() {
+                const accordionBody = $(this).closest('.accordion-body');
+                const type = accordionBody.find('.main-type').val();
+                const table = accordionBody.find('.section-table');
+                const tbody = table.find('tbody');
+                table.show()
+
+                const pickerId = generateUniqueId();
+                let rowHtml = "";
+
+                if (type === "color") {
+                    rowHtml = `
+                 <tr>
+                       <td>
+                            <input type="text" class="form-control label-input" name="" id=""
+                                placeholder="Label"></input>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div id="${pickerId}-preview" class="color-preview"></div>
+                                <input type="hidden" class="color-value" data-picker-id="${pickerId}"></input>
+                                <span class="review-row-btn ms-2"><i class="ti ti-trash"></i></span>
+                            </div>
+                        </td></tr>
+                        `
+                } else {
+                    rowHtml = `
+                     <tr>
+                        <td colspan="2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <input type="text" class="form-control label-input" name="" placeholder="Label"></input>
+                                <span class="review-row-btn ms-2"><i class="ti ti-trash"></i></span>
+                            </div>
+                        </td>
+                    </tr>
+                    `
+                }
+                tbody.append(rowHtml);
+
+                if (type === "color") {
+                    createPicker(
+                        pickerId + "-preview",
+                        "#000000",
+                        `input[data-picker-id="${pickerId}"]`
+                    );
+                }
+            })
+
+            // remove row
+            $(document).on("click", ".review-row-btn", function() {
+                const $row = $(this).closest("tr");
+                const $colorPreview = $row.find(".color-preview");
+                if ($colorPreview.length) {
+                    destroyPicker($colorPreview.attr("id"));
+                }
+                const $table = $(this).closest("section-table");
+                $row.remove();
+                const tbody = $table.find("tbody");
+                if (tbody.children().length === 0) {
+                    $table.hide();
+                }
+            })
+
+            // chnage type => rebuild rowa and mange pickers
+            $(document).on("change", ".main-type", function() {
+                const accordionBody = $(this).closest('.accordion-body');
+                const type = $(this).val();
+                const table = accordionBody.find('.section-table');
+                const tbody = table.find('tbody');
+
+                // collect row values and destroy any existing pickers
+                const labels = [];
+
+                tbody.find("tr").each(function() {
+                    const $colorPreview = $(this).find(".color-preview");
+                    if ($colorPreview.length) {
+                        destroyPicker($colorPreview.attr("id"));
+                    }
+                    const labelVal = $(this).find(".label-input").val();
+                    labels.push(labelVal || "");
+                });
+                tbody.empty();
+
+                labels.forEach(label => {
+                    const pickerId = generateUniqueId();
+                    let rowHtml = ""
+                    if (type === "color") {
+                        rowHtml = `
+                 <tr>
+                       <td>
+                            <input type="text" class="form-control label-input" name="" id=""
+                                placeholder="Label" value="${label}"></input>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div id="${pickerId}-preview" class="color-preview"></div>
+                                <input type="hidden" class="color-value" data-picker-id="${pickerId}" name=""></input>
+                                <span class="review-row-btn ms-2"><i class="ti ti-trash"></i></span>
+                            </div>
+                        </td></tr>
+                        `
+                    } else {
+                        rowHtml = `
+                     <tr>
+                        <td colspan="2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <input type="text" class="form-control label-input" name="" placeholder="Label" value="${label}"></input>
+                                <span class="review-row-btn ms-2"><i class="ti ti-trash"></i></span>
+                            </div>
+                        </td>
+                    </tr>
+                    `
+                    }
+                    tbody.append(rowHtml);
+
+                    if (type === "color") {
+                        createPicker(
+                            pickerId + "-preview",
+                            "#000000",
+                            `input[data-picker-id="${pickerId}"]`
+                        );
+                    }
+                })
+                if (labels.length > 0) {
+                    table.show();
+                } else {
+                    table.hide();
+                }
+            })
+        })
+    </script>
+
     <script>
         $(document).on('change', '.category-check', function() {
             const isChecked = $(this).is(':checked');
