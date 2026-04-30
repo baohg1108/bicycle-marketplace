@@ -514,12 +514,7 @@
                     success: function(response) {
 
                         if (response.status == 'success') {
-                            // Initialize image uploader with the new product ID
-                            imageUploadProductId = response.id;
-                            if (!imageUploader) {
-                                initImageUploader();
-                            }
-                            notyf.success('Product created successfully');
+                            window.location.href = response.redirect_url;
                         }
                     },
                     error: function(xhr, status, error) {

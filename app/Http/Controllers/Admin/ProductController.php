@@ -3,12 +3,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
+use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Store;
 use App\Models\Tag;
+use App\Services\AlertService;
 use App\Traits\FileUploadTrait;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -60,6 +62,8 @@ class ProductController extends Controller
         $product->tags()->sync($request->tags);
 
         return response()->json([
+            'id' => $product->id,
+            'redirect_url' => route('admin.products.edit', $product->id) .'#product-images',
             'status'  => 'success',
             'message' => 'Product created successfully',
         ]);
@@ -68,11 +72,13 @@ class ProductController extends Controller
     public function edit(int $id)
     {
         $product    = Product::findOrFail($id);
+        $productCategoryIds = $product->categories->pluck('id')->toArray();
+        $productTagIds = $product->tags->pluck('id')->toArray();
         $stores     = Store::select(["name", "id"])->get();
         $brands     = Brand::select(["name", "id"])->where("is_active", 1)->get();
         $tags       = Tag::where("is_active", 1)->get();
         $categories = Category::getNested();
-        return view("admin.product.edit", compact("stores", "brands", "tags", 'categories', 'product'));
+        return view("admin.product.edit", compact("stores", "brands", "tags", 'categories', 'product', 'productCategoryIds', 'productTagIds'));
     }
 
     public function uploadImages(Request $request, Product $product)
@@ -96,6 +102,44 @@ class ProductController extends Controller
             "message" => "Image uploaded successfully",
         ]);
     }
+
+    function update(ProductUpdateRequest $request, int $id)
+    {
+        $product = Product::findOrFail($id);
+        $product->name = $request->name;
+        $product->short_description = $request->short_description;
+        $product->description = $request->content;
+        $product->sku = $request->sku;
+        $product->price = $request->price;
+        $product->special_price = $request->special_price;
+        $product->special_price_start = $request->from_date;
+        $product->special_price_end = $request->to_date;
+        $product->qty = $request->quantity;
+        $product->manage_stock = $request->has('manage_stock') ? 'yes' : 'no';
+        $product->in_stock = $request->stock_status == 'in_stock' ? 1 : 0;
+        $product->status = $request->status;
+        $product->store_id = $request->store;
+        $product->brand_id = $request->brand;
+        $product->is_featured = $request->has('is_featured') ? 1 : 0;
+        $product->is_hot = $request->has('is_hot') ? 1 : 0;
+        $product->is_new = $request->has('is_new') ? 1 : 0;
+        $product->save();
+
+        /** Attach categories */
+        $product->categories()->sync($request->categories);
+
+        /** Attach tags */
+        $product->tags()->sync($request->tags);
+
+        AlertService::created();
+
+        return response()->json([
+            'id' => $product->id,
+            'status' => 'success',
+            'message' => 'Product updated successfully',
+            'redirect_url' => route('admin.products.index')
+        ]);
+    } 
 
     public function destroyImage(int $id)
     {
