@@ -15,6 +15,7 @@
         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
     });
 
+    // tinymce init
     tinymce.init({
         selector: 'textarea#short-editor',
         height: 300,
@@ -31,6 +32,7 @@
     });
 
     // sweetalert init
+
     $(function() {
         $('.delete-item').on('click', function(e) {
             e.preventDefault();
@@ -67,13 +69,17 @@
         });
     })
 
-    // notyf init
+    notyf init
     var notyf = new Notyf({
         duration: 3000
     });
+
+
+
     // select2 init
     $(document).ready(function() {
         $('.select2').select2();
+
     });
 
     // datepicker init

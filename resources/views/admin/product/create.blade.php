@@ -1,8 +1,10 @@
 @extends('admin.layouts.app')
+
 @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 
     <style>
+        /* Add these new styles */
         .dropzone {
             border: 2px dashed #ccc;
             border-radius: 4px;
@@ -14,7 +16,7 @@
 
         .dropzone.dz-drag-hover {
             border-color: #2196F3;
-            background: fixed #e3f2fd;
+            background: #e3f2fd;
         }
 
         .image-preview-container {
@@ -27,9 +29,9 @@
         .image-preview-item {
             position: relative;
             padding: 5px;
-            boder: 1px solid #ddd;
+            border: 1px solid #ddd;
             border-radius: 4px;
-            corsor: move;
+            cursor: move;
         }
 
         .image-preview-item img {
@@ -45,7 +47,7 @@
             right: -10px;
             background: red;
             color: white;
-            border-radius: 50;
+            border-radius: 50%;
             width: 24px;
             height: 24px;
             text-align: center;
@@ -137,91 +139,91 @@
                             </div>
 
                         </div>
+                    </div>
 
-                        <div class="card">
-                            <div class="card-header">
-                                Overview
-                            </div>
-                            <div class="card-body">
+                    <div class="card">
+                        <div class="card-header">
+                            Overview
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">SKU</label>
+                                        <input type="text" class="form-control" name="sku" value="">
+                                        <x-input-error :messages="$errors->get('sku')" class="mt-2" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Price</label>
+                                        <input type="text" class="form-control" name="price" value="">
+                                        <x-input-error :messages="$errors->get('price')" class="mt-2" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Special Price</label>
+                                        <input type="text" class="form-control" name="special_price" value="">
+                                        <x-input-error :messages="$errors->get('special_price')" class="mt-2" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">From Date</label>
+                                        <input type="text" class="form-control datepicker" name="from_date"
+                                            value="">
+                                        <x-input-error :messages="$errors->get('from_date')" class="mt-2" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">To Date</label>
+                                        <input type="text" class="form-control datepicker" name="to_date" value=""
+                                            id="datepicker-tow">
+                                        <x-input-error :messages="$errors->get('to_date')" class="mt-2" />
+                                    </div>
+                                </div>
+
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">SKU</label>
-                                            <input type="text" class="form-control" name="sku" value="">
-                                            <x-input-error :messages="$errors->get('sku')" class="mt-2" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Price</label>
-                                            <input type="text" class="form-control" name="price" value="">
-                                            <x-input-error :messages="$errors->get('price')" class="mt-2" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Special Price</label>
-                                            <input type="text" class="form-control" name="special_price" value="">
-                                            <x-input-error :messages="$errors->get('special_price')" class="mt-2" />
+                                            <label class="form-check">
+                                                <input class="form-check-input manage-stock-check" name="manage_stock"
+                                                    type="checkbox">
+                                                <span class="form-check-label">Manage Stock</span>
+                                            </label>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-12 manage-stock d-none">
                                         <div class="mb-3">
-                                            <label class="form-label">From Date</label>
-                                            <input type="text" class="form-control datepicker" name="from_date"
-                                                value="">
-                                            <x-input-error :messages="$errors->get('from_date')" class="mt-2" />
+                                            <label class="form-label">Quantity</label>
+                                            <input type="text" class="form-control" name="quantity" value="">
+                                            <x-input-error :messages="$errors->get('quantity')" class="mt-2" />
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">To Date</label>
-                                            <input type="text" class="form-control datepicker" name="to_date"
-                                                value="" id="datepicker-tow">
-                                            <x-input-error :messages="$errors->get('to_date')" class="mt-2" />
-                                        </div>
-                                    </div>
+                                </div>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="mb-3">
-                                                <label class="form-check">
-                                                    <input class="form-check-input manage-stock-check" name="manage_stock"
-                                                        type="checkbox">
-                                                    <span class="form-check-label">Manage Stock</span>
-                                                </label>
-                                            </div>
+                                <div class="rwo">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Stock Status</h3>
                                         </div>
-
-                                        <div class="col-md-12 manage-stock d-none">
-                                            <div class="mb-3">
-                                                <label class="form-label">Quantity</label>
-                                                <input type="text" class="form-control" name="quantity" value="">
-                                                <x-input-error :messages="$errors->get('quantity')" class="mt-2" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="card mb-3">
-                                            <div class="card-header">
-                                                <h3 class="card-title">Stock Status</h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label class="form-check">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="stock_status" checked="" value="in_stock">
-                                                            <span class="form-check-label">In Stock</span>
-                                                        </label>
-                                                        <label class="form-check">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="stock_status" checked="" value="out_of_stock">
-                                                            <span class="form-check-label">Out Of Stock</span>
-                                                        </label>
-                                                    </div>
+                                        <div class="card-body">
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="stock_status" checked="" value="in_stock">
+                                                        <span class="form-check-label">In Stock</span>
+                                                    </label>
+                                                    <label class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="stock_status" checked="" value="out_of_stock">
+                                                        <span class="form-check-label">Out Of Stock</span>
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
@@ -230,11 +232,7 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
-
-
                 <div class="col-md-4">
                     <div class="card mb-3">
                         <div class="card-header">
@@ -263,7 +261,7 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <select name="store" class="form-control select2" id="">
-                                        <option value="">Select a store</option>
+                                        <option value="published">Select a store</option>
                                         @foreach ($stores as $store)
                                             <option value="{{ $store->id }}">{{ $store->name }}</option>
                                         @endforeach
@@ -349,6 +347,8 @@
                                                 @endif
                                             </li>
                                         @endforeach
+
+
                                     </ul>
                                 </div>
                             </div>
@@ -416,7 +416,10 @@
                         </div>
                     </div>
 
+
+
                     <div class="card mb-3">
+
                         <div class="card-body">
                             <div class="col-md-12">
                                 <div class="mb-3 row">
@@ -432,10 +435,11 @@
     </div>
 @endsection
 
-
 @push('scripts')
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+
     <script>
         $(document).on('change', '.category-check', function() {
             const isChecked = $(this).is(':checked');
@@ -484,6 +488,7 @@
                     $(this).addClass('d-none');
                 }
             });
+
             // if query is empty, show all
             if (query === '') {
                 $('#category-tree li').removeClass('d-none');
@@ -498,6 +503,7 @@
             }
         })
 
+
         // submit form
         $(function() {
             $('.product-form').on('submit', function(e) {
@@ -507,12 +513,12 @@
 
                 $.ajax({
                     method: 'POST',
-                    url: "{{ route('admin.products.store') }}",
+                    url: "{{ route('admin.products.store', ['type' => ':type']) }}".replace(
+                        ':type', '{{ request()->type }}'),
                     data: data,
                     contentType: false,
                     processData: false,
                     success: function(response) {
-
                         if (response.status == 'success') {
                             window.location.href = response.redirect_url;
                         }
@@ -524,9 +530,23 @@
                             notyf.error(errors[key][0]);
                         });
                     }
-
                 })
             });
-        });
+        })
+
+        // slug auto-generate
+        $('#name').on('input', function() {
+            if (!$('#category-id').val()) {
+                $('#slug').val(slugify($(this).val()));
+            }
+        })
+
+
+        function slugify(text) {
+            return text.toString().toLowerCase().replace(/\s+/g, '-')
+                .replace(/[^a-z0-9\-]/g, '')
+                .replace(/\-+/g, '-')
+                .replace(/^\-+|\-+$/g, '');
+        }
     </script>
 @endpush

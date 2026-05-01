@@ -104,18 +104,26 @@ Route::middleware('auth:admin')
 
         // Product Routes
         Route::get("/products", [ProductController::class, 'index'])->name("products.index");
-        Route::get("/products/physical/create", [ProductController::class, 'create'])->name("products.create");
-        Route::post("/products/physical/create", [ProductController::class, 'store'])->name("products.store");
+        Route::get('/products/{type}/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/products/{type}/create', [ProductController::class, 'store'])->name('products.store');
         Route::get("/products/physical/{product}/edit", [ProductController::class, 'edit'])->name("products.edit");
         Route::post("/products/physical/{product}/update", [ProductController::class, 'update'])->name("products.update");
         Route::post("/products/images/upload/{product}", [ProductController::class, 'uploadImages'])->name("products.images.upload");
         Route::delete("/products/images/{image}", [ProductController::class, 'destroyImage'])->name("products.images.destroy");
         Route::post("/products/images/reorder", [ProductController::class, 'imagesReorder'])->name("products.images.reorder");
 
-        // product Attributes
-        Route::post('/products/images/attributes/{product}/store', [ProductController::class, 'storeAttributes'])->name('products.attributes.store');
-        Route::delete('/products/images/attributes/{product}/{attribute}', [ProductController::class, 'destroyAttribute'])->name('products.attributes.destroy');
+         /** Product Attributes Routes */
+        Route::post('/products/attributes/{product}/store', [ProductController::class, 'storeAttributes'])->name('products.attributes.store');
+        Route::delete('/products/attributes/{product}/{attribute}', [ProductController::class, 'destroyAttribute'])->name('products.attributes.destroy');
 
+        /** Product Variants Routes */
+        Route::post('/products/variants/{product}/update', [ProductController::class, 'updateVariants'])->name('products.variants.update');
+          Route::post('/products/digital/file-upload', [ProductController::class, 'uploadDigitalProductFile'])->name('digital-products.file.upload');
+        Route::delete('/products/digital/{product}/{file}', [ProductController::class, 'destroyDigitalProductFile'])->name('digital-products.file.destroy');
+
+        Route::get('/products/digital/{product}/edit', [ProductController::class, 'editDigitalProduct'])->name('digital-products.edit');
+
+         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
         
 
         // setting
