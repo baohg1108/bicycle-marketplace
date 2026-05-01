@@ -1,7 +1,6 @@
 <?php
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,16 +22,16 @@ class Product extends Model
         return $this->hasMany(ProductImage::class)->orderBy("order");
     }
 
-    function attributes(): BelongsToMany
+    public function attributes(): BelongsToMany
     {
         return $this->belongsToMany(Attribute::class, 'product_attribute_values')->withPivot('attribute_value_id');
     }
-    function attributeValues(): BelongsToMany
+    public function attributeValues(): BelongsToMany
     {
         return $this->belongsToMany(AttributeValue::class, 'product_attribute_values')->withPivot('attribute_id');
     }
 
-    function attributeWithValues(): BelongsToMany
+    public function attributeWithValues(): BelongsToMany
     {
         return $this->belongsToMany(Attribute::class, 'product_attribute_values')
             ->distinct()
@@ -45,5 +44,10 @@ class Product extends Model
                         ->orderBy('id', 'asc');
                 });
             }]);
+    }
+
+    public function variants(): HasMany
+    {
+        return $this->hasMany(ProductVariant::class);
     }
 }

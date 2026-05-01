@@ -2,7 +2,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Admin\ProductStoreRequest;
 use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Models\Attribute;
@@ -11,13 +10,15 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductVariant;
 use App\Models\Store;
 use App\Models\Tag;
 use App\Services\AlertService;
 use App\Traits\FileUploadTrait;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Label;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -66,22 +67,22 @@ class ProductController extends Controller
         $product->tags()->sync($request->tags);
 
         return response()->json([
-            'id' => $product->id,
-            'redirect_url' => route('admin.products.edit', $product->id) .'#product-images',
-            'status'  => 'success',
-            'message' => 'Product created successfully',
+            'id'           => $product->id,
+            'redirect_url' => route('admin.products.edit', $product->id) . '#product-images',
+            'status'       => 'success',
+            'message'      => 'Product created successfully',
         ]);
     }
 
     public function edit(int $id)
     {
-        $product    = Product::findOrFail($id);
+        $product            = Product::findOrFail($id);
         $productCategoryIds = $product->categories->pluck('id')->toArray();
-        $productTagIds = $product->tags->pluck('id')->toArray();
-        $stores     = Store::select(["name", "id"])->get();
-        $brands     = Brand::select(["name", "id"])->where("is_active", 1)->get();
-        $tags       = Tag::where("is_active", 1)->get();
-        $categories = Category::getNested();
+        $productTagIds      = $product->tags->pluck('id')->toArray();
+        $stores             = Store::select(["name", "id"])->get();
+        $brands             = Brand::select(["name", "id"])->where("is_active", 1)->get();
+        $tags               = Tag::where("is_active", 1)->get();
+        $categories         = Category::getNested();
 
         $attributesWithValues = $product?->attributeWithValues ?? [];
         // dd($attributesWithValues);
@@ -110,26 +111,26 @@ class ProductController extends Controller
         ]);
     }
 
-    function update(ProductUpdateRequest $request, int $id)
+    public function update(ProductUpdateRequest $request, int $id)
     {
-        $product = Product::findOrFail($id);
-        $product->name = $request->name;
-        $product->short_description = $request->short_description;
-        $product->description = $request->content;
-        $product->sku = $request->sku;
-        $product->price = $request->price;
-        $product->special_price = $request->special_price;
+        $product                      = Product::findOrFail($id);
+        $product->name                = $request->name;
+        $product->short_description   = $request->short_description;
+        $product->description         = $request->content;
+        $product->sku                 = $request->sku;
+        $product->price               = $request->price;
+        $product->special_price       = $request->special_price;
         $product->special_price_start = $request->from_date;
-        $product->special_price_end = $request->to_date;
-        $product->qty = $request->quantity;
-        $product->manage_stock = $request->has('manage_stock') ? 'yes' : 'no';
-        $product->in_stock = $request->stock_status == 'in_stock' ? 1 : 0;
-        $product->status = $request->status;
-        $product->store_id = $request->store;
-        $product->brand_id = $request->brand;
-        $product->is_featured = $request->has('is_featured') ? 1 : 0;
-        $product->is_hot = $request->has('is_hot') ? 1 : 0;
-        $product->is_new = $request->has('is_new') ? 1 : 0;
+        $product->special_price_end   = $request->to_date;
+        $product->qty                 = $request->quantity;
+        $product->manage_stock        = $request->has('manage_stock') ? 'yes' : 'no';
+        $product->in_stock            = $request->stock_status == 'in_stock' ? 1 : 0;
+        $product->status              = $request->status;
+        $product->store_id            = $request->store;
+        $product->brand_id            = $request->brand;
+        $product->is_featured         = $request->has('is_featured') ? 1 : 0;
+        $product->is_hot              = $request->has('is_hot') ? 1 : 0;
+        $product->is_new              = $request->has('is_new') ? 1 : 0;
         $product->save();
 
         /** Attach categories */
@@ -141,12 +142,12 @@ class ProductController extends Controller
         AlertService::created();
 
         return response()->json([
-            'id' => $product->id,
-            'status' => 'success',
-            'message' => 'Product updated successfully',
-            'redirect_url' => route('admin.products.index')
+            'id'           => $product->id,
+            'status'       => 'success',
+            'message'      => 'Product updated successfully',
+            'redirect_url' => route('admin.products.index'),
         ]);
-    } 
+    }
 
     public function destroyImage(int $id)
     {
@@ -169,33 +170,38 @@ class ProductController extends Controller
         }
     }
 
-    function storeAttributes(Request $request, Product $product)
-{
-    $request->validate([
-        'attribute_name' => ['required', 'string', 'max:255'],
-        'attribute_type' => ['required', 'string', 'in:text,color'],
-    ]);
+    public function storeAttributes(Request $request, Product $product)
+    {
+        $request->validate([
+            'attribute_name' => ['required', 'string', 'max:255'],
+            'attribute_type' => ['required', 'string', 'in:text,color'],
+        ]);
 
-    DB::beginTransaction();
+        DB::beginTransaction();
 
-    try {
-        if($request->filled('attribute_id')) {
-            $this->updateExistingAttribute($request, $product);
-        }else {
-            $this->createNewAttribute($request, $product);
-        }
+        try {
+            if ($request->filled('attribute_id')) {
+                $this->updateExistingAttribute($request, $product);
+            } else {
+                $this->createNewAttribute($request, $product);
+            }
 
-        DB::commit();
+            DB::commit();
+
+            // return product variants
+            $this->regenerateProductVariants($product);
+
         } catch (\Throwable $th) {
-        DB::rollBack();
-        return response()->json(['error' => $th->getMessage()], 500);
-    }
+            DB::rollBack();
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
 
         return $this->buildSuccessResponse($product);
     }
 
-    function createNewAttribute(Request $request, Product $product) {
-        $attribute = new Attribute();
+    public function createNewAttribute(Request $request, Product $product)
+    {
+        $attribute       = new Attribute();
         $attribute->name = $request->attribute_name;
         $attribute->type = $request->attribute_type;
         $attribute->save();
@@ -204,10 +210,9 @@ class ProductController extends Controller
 
     }
 
-
-    function updateExistingAttribute(Request $request, Product $product)
+    public function updateExistingAttribute(Request $request, Product $product)
     {
-        $attribute = Attribute::findOrFail($request->attribute_id);
+        $attribute       = Attribute::findOrFail($request->attribute_id);
         $attribute->name = $request->attribute_name;
         $attribute->type = $request->attribute_type;
         $attribute->save();
@@ -219,44 +224,45 @@ class ProductController extends Controller
         $this->addAttributeValue($attribute, $request, $product);
     }
 
-    function clearAttributeData(Attribute $attribute, Product $product)
+    public function clearAttributeData(Attribute $attribute, Product $product)
     {
         DB::table('product_attribute_values')
-        ->where('product_id', $product->id)
-        ->where('attribute_id', $attribute->id)
-        ->delete();
+            ->where('product_id', $product->id)
+            ->where('attribute_id', $attribute->id)
+            ->delete();
 
         AttributeValue::where('attribute_id', $attribute->id)->delete();
     }
 
-    function addAttributeValue(Attribute $attribute, Request $request, Product $product)
+    public function addAttributeValue(Attribute $attribute, Request $request, Product $product)
     {
         $labels = $request->label ?? [];
 
-        foreach($labels as $index => $label){
-            if(empty($label)) continue;
-            
-            $attributeValue = new AttributeValue();
+        foreach ($labels as $index => $label) {
+            if (empty($label)) {
+                continue;
+            }
+
+            $attributeValue               = new AttributeValue();
             $attributeValue->attribute_id = $attribute->id;
-            $attributeValue->value = $label;
-            $attributeValue->color = $request->color_value[$index] ?? null;
+            $attributeValue->value        = $label;
+            $attributeValue->color        = $request->color_value[$index] ?? null;
             $attributeValue->save();
 
             // link to product
             DB::table('product_attribute_values')->insert([
-                'product_id' => $product->id,
-                'attribute_id' => $attribute->id,
-                'attribute_value_id' => $attributeValue->id
+                'product_id'         => $product->id,
+                'attribute_id'       => $attribute->id,
+                'attribute_value_id' => $attributeValue->id,
             ]);
         }
     }
 
-    function buildSuccessResponse(Product $product)
-   {
+    public function buildSuccessResponse(Product $product)
+    {
         $product->refresh();
 
         $attributes = $product->attributeWithValues;
-
 
         $html = '';
 
@@ -267,16 +273,16 @@ class ProductController extends Controller
 
         return response()->json([
             'message' => 'Attribute generated successfully',
-            'html' => $html
-            
+            'html'    => $html,
+
         ]);
     }
 
-    function destroyAttribute(int $productId, int $attributeId)
+    public function destroyAttribute(int $productId, int $attributeId)
     {
-       try {
-         $product = Product::findOrFail($productId);
-        $attribute = Attribute::findOrFail($attributeId);
+        try {
+            $product   = Product::findOrFail($productId);
+            $attribute = Attribute::findOrFail($attributeId);
 
             $this->clearAttributeData($attribute, $product);
 
@@ -285,7 +291,6 @@ class ProductController extends Controller
             $attributes = $product->attributeWithValues;
 
             $attribute->delete();
-
 
             $html = '';
 
@@ -296,10 +301,98 @@ class ProductController extends Controller
 
             return response()->json([
                 'message' => 'Attribute deleted successfully',
-                'html' => $html
+                'html'    => $html,
             ]);
-       } catch(\Throwable $th){
-        return response()->json(['error' => $th->getMessage()], 500);
-       }
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
+    public function regenerateProductVariants(Product $product)
+    {
+        // clear existing variants
+        $this->clearExistingVariants($product);
+
+        // get current attribute values gorup by attribute
+        $attributeGroups = $this->getAttributeGroups($product);
+
+        if ($attributeGroups->isEmpty()) {
+            throw new \Exception("No attributes found for product");
+        }
+
+        $combinations = $this->cartesianProduct($attributeGroups);
+
+        $this->createVariantsFormCombinations($product, $combinations);
+
+    }
+
+    public function getAttributeGroups(Product $product)
+    {
+        $groupedAttributes = DB::table("product_attribute_values")->where("product_id", $product->id)->get()->groupBy("attribute_id");
+
+        $attributeGroups = collect();
+
+        foreach ($groupedAttributes as $attributeId => $items) {
+            $attributeValues = AttributeValue::whereIn("id", $items->pluck("attribute_value_id"))->get();
+            $attributeGroups->push($attributeValues);
+        }
+
+        return $attributeGroups;
+    }
+
+    public function cartesianProduct(Collection $attributeGroups)
+    {
+        $result = [[]];
+
+        foreach ($attributeGroups as $attributeValues) {
+            $temp = [];
+
+            foreach ($result as $resultItem) {
+                foreach ($attributeValues as $attributeValue) {
+                    $temp[] = array_merge($resultItem, [$attributeValue]);
+                }
+            }
+            $result = $temp;
+        }
+        return $result;
+    }
+
+    public function createVariantsFormCombinations(Product $product, array $combinations)
+    {
+        foreach ($combinations as $combination) {
+            $variant = $this->createSingleVariant($product, $combination);
+            $this->attachAttributesToVariant($variant, $combination);
+        }
+    }
+
+    public function createSingleVariant(Product $product, array $combination)
+    {
+        $variantName = collect($combination)->pluck("value")->implode("/");
+
+        return ProductVariant::create([
+            'product_id' => $product->id,
+            'name'       => $variantName,
+            'price'      => 0,
+            'sku'        => "",
+            'qty'        => 0,
+        ]);
+    }
+
+    public function attachAttributesToVariant(ProductVariant $variant, array $combination)
+    {
+        foreach ($combination as $attributeValue) {
+            DB::table('product_variant_attribute_value')->insert([
+                'product_variant_id' => $variant->id,
+                'attribute_id'       => $attributeValue->attribute_id,
+                'attribute_value_id' => $attributeValue->id,
+            ]);
+        }
+    }
+    public function clearExistingVariants(Product $product)
+    {
+        foreach ($product->variants as $variant) {
+            DB::table('product_variant_attribute_value')->where('product_variant_id', $variant->id)->delete();
+            $variant->delete();
+        }
     }
 }
