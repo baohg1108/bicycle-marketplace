@@ -88,6 +88,56 @@
                 opacity: 0.6;
             }
         }
+
+        .dz-preview {
+            position: relative;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            background: #f8f8f8;
+            border-radius: 6px;
+            text-align: left;
+            font-family: sans-serif;
+        }
+
+        .dz-filename {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .dz-progress {
+            height: 6px;
+            background: #e4e4e4;
+            margin-top: 6px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .dz-upload {
+            background: #28a745;
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .dz-percentage {
+            font-size: 12px;
+            margin-top: 4px;
+            color: #555;
+        }
+
+        .dz-remove {
+            position: absolute;
+            top: 6px;
+            right: 10px;
+            font-size: 18px;
+            color: #dc3545;
+            cursor: pointer;
+        }
+
+        .dz-remove:hover {
+            color: #a71d2a;
+        }
     </style>
 @endpush
 
@@ -267,40 +317,33 @@
 
                     <div class="card mt-3" id="product-images">
                         <div class="card-header">
-                            <h3 class="card-title">Product Attributes</h3>
+                            <h3 class="card-title">Product Files</h3>
                         </div>
                         <div class="card-body">
                             <div class="col-md-12">
-                                <div class="accordion" id="accordion-default">
-                                    @foreach ($attributesWithValues as $attribute)
-                                        @include('admin.product.partials.attribute', [
-                                            '$attribute' => $attribute,
-                                            'product' => $product,
-                                        ])
-                                    @endforeach
-                                </div>
-
-                                <button class="btn btn-primary mt-3" type="button" id="add-attribute-btn">Add
-                                    Attribute</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card mt-3" id="product-images">
-                        <div class="card-header">
-                            <h3 class="card-title">Product Variants</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="col-md-12">
-                                <div class="accordion" id="accordion-variant">
-                                    @foreach ($variants as $variant)
-                                        @include('admin.product.partials.variant', ['variant' => $variant])
-                                    @endforeach
+                                <div class="mb-3">
+                                    <div id="fileUploader" class="dropzone"></div>
+                                    <div id="filePreviewContainer" class="file-preview-container">
+                                        @foreach ($product->files ?? [] as $file)
+                                            <div class="dz-preview dz-file-preview">
+                                                <div class="dz-filename"><span data-dz-name>{{ $file->filename }}</span>
+                                                </div>
+                                                <div class="dz-progress">
+                                                    <div class="dz-upload" data-dz-uploadprogress style="width: 100%">
+                                                    </div>
+                                                </div>
+                                                <div class="dz-percentage"><span class="progress-text">uploaded</div>
+                                                <div class="dz-remove" data-file-id="{{ $file->id }}" data-dz-remove>
+                                                    &times;</div>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-4">
                     <div class="card mb-3">
                         <div class="card-header">
@@ -533,378 +576,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr"></script>
 
-    <script>
-        $(function() {
-
-            const pickerInstances = {};
-
-            let uniqueCounter = 0;
-
-            function generateUniqueId(prefix = 'picker-') {
-                uniqueCounter++;
-                return prefix + uniqueCounter + '-' + Date.now();
-            }
-
-            function createPicker(pickerId, defaultColor, inputSelector) {
-                if (pickerInstances[pickerId]) {
-                    pickerInstances[pickerId].destroyAndRemove();
-                }
-
-                const picker = Pickr.create({
-                    el: `#${pickerId}`,
-                    theme: 'classic',
-                    default: defaultColor,
-                    components: {
-                        preview: true,
-                        opacity: true,
-                        hue: true,
-                        interaction: {
-                            hex: true,
-                            rgba: true,
-                            input: true,
-                            clear: true,
-                            save: true
-                        }
-                    }
-                });
-
-                picker.on('change', (color) => {
-                    const selectedColor = color.toHEXA().toString();
-                    $(`#${pickerId}`).css('background-color', selectedColor);
-                    $(inputSelector).val(selectedColor);
-                })
-
-                pickerInstances[pickerId] = picker;
-            }
-
-            function destroyPicker(pickerId) {
-                if (pickerInstances[pickerId]) {
-                    pickerInstances[pickerId].destroyAndRemove();
-                    delete pickerInstances[pickerId];
-                }
-            }
-
-            function initColorPickersInContainer($container) {
-                $container.find('.color-preview').each(function() {
-                    const $this = $(this);
-                    const pickerId = $this.attr('id');
-                    const currentColor = $this.css('background-color') || '#oooooo';
-                    createPicker(pickerId, currentColor, `input[data-picker-id="${pickerId}"]`);
-                })
-            }
-
-
-            let count = 0;
-            $('#add-attribute-btn').on('click', function() {
-                count++;
-                const collapseId = 'collapse' + count;
-                const headerId = 'header' + count;
-
-                const accordionItem = `
-                <div class="accordion-item" data-index="${count}">
-    <div class="accordion-header" id="${headerId}">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-            data-bs-target="#${collapseId}" aria-controls="${collapseId}" aria-expanded="false">
-            New Attribute #${count}
-            <div class="accordion-button-toggle">
-                <!-- Download SVG icon from http://tabler.io/icons/icon/chevron-down -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="icon icon-1">
-                    <path d="M6 9l6 6l6 -6"></path>
-                </svg>
-            </div>
-        </button>
-        <span class="delete-btn"
-            style="padding: 5px; background: red; color: white; border-radius: 5px; margin-right: 10px;"><i
-                class="ti ti-trash"></i></span>
-    </div>
-    <div id="${collapseId}" class="accordion-collapse collapse" data-bs-parent="#accordion-default" style="">
-        <div class="accordion-body">
-            <form action="" method="POST" >
-                @csrf
-            <div class="row">
-                <div class="col-md-6">
-                    <label for="" class="form-label">Name</label>
-                    <input type="text" class="form-control" value="" name="attribute_name">
-                </div>
-                <div class="col-md-6">
-                    <label for="" class="form-label">Type</label>
-                    <select name="attribute_type" class="form-control main-type" id="">
-                        <option value="text">Text</option>
-                        <option value="color">Color</option>
-                    </select>
-                </div>
-            </div>
-            <table class="table table-bordered section-table mt-3" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>Label</th>
-                        <th class="value-header">Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-            <div class="mt-2">
-                <button class="btn btn-sm btn-primary add-row-btn" type="button">Add Row</button>
-                <button class="btn btn-sm btn-success save-btn" type="button">Save</button>
-            </div>
-        </div>
-        </form>
-    </div>
-</div>
-                `;
-
-                $('#accordion-default').append(accordionItem);
-            })
-
-
-            $(document).on('click', '.add-row-btn', function() {
-                const accordionBody = $(this).closest('.accordion-body');
-                const type = accordionBody.find('.main-type').val();
-                const table = accordionBody.find('.section-table');
-                const tbody = table.find('tbody');
-                table.show();
-
-                const pickerId = generateUniqueId();
-                let rowHtml = '';
-
-
-                if (type === 'color') {
-                    rowHtml = `
-                    <tr>
-                        <td>
-                            <input type="text" name="label[]" id="" class="form-control label-input" class="Label">
-                        </td>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <div id="${pickerId}" class="color-preview"> </div>
-                                <input type="hidden" class="color-value" data-picker-id="${pickerId}" name="color_value[]" >
-                                <span class="review-row-btn ms-2"><i class="ti ti-trash"></i></span>
-                            </div>
-
-                        </td>
-                    </tr>
-                    `
-                } else {
-                    rowHtml = `
-                    <tr>
-                        <td colspan="2">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <input type="text" class="form-control label-input" name="label[]" placeholder="Label">
-                                <span class="review-row-btn ms-2"><i class="ti ti-trash"></i></span>
-                            </div>
-                        </td>
-                    </tr>
-                    `
-                }
-
-                tbody.append(rowHtml);
-
-                if (type === 'color') {
-                    createPicker(pickerId, '#000000', `input[data-picker-id="${pickerId}"]`);
-                }
-            })
-
-
-            // remove attribute values
-            $(document).on('click', '.review-row-btn', function() {
-                const $row = $(this).closest('tr');
-                const $colorPreview = $row.find('.color-preview');
-                if ($colorPreview.length) {
-                    destroyPicker($colorPreview.attr('id'));
-                }
-                const $table = $(this).closest('.section-table');
-                $row.remove();
-                const tbody = $table.find('tbody');
-                if (tbody.children().length === 0) {
-                    $table.hide();
-                }
-            })
-
-            // change type => rebuild rows and mange picker
-            $(document).on('change', '.main-type', function() {
-                const accordionBody = $(this).closest('.accordion-body');
-                const type = $(this).val();
-                const table = accordionBody.find('.section-table');
-                const tbody = table.find('tbody');
-
-                // collect row values and destroy any existing pickers
-                const labels = [];
-
-                tbody.find('tr').each(function() {
-                    const $colorPreview = $(this).find('.color-preview');
-                    if ($colorPreview.length) {
-                        destroyPicker($colorPreview.attr('id'));
-                    }
-                    const labelVal = $(this).find('.label-input').val();
-                    labels.push(labelVal || '');
-                })
-
-                tbody.empty();
-
-                labels.forEach(label => {
-                    const pickerId = generateUniqueId();
-                    let rowHtml = '';
-
-                    if (type === 'color') {
-                        rowHtml = `
-                    <tr>
-                        <td>
-                            <input type="text" name="label[]" id="" class="form-control label-input" class="Label" value="${label}">
-                        </td>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <div id="${pickerId}" class="color-preview"> </div>
-                                <input type="hidden" class="color-value" data-picker-id="${pickerId}" name="color_value[]">
-                                <span class="review-row-btn ms-2"><i class="ti ti-trash"></i></span>
-                            </div>
-
-                        </td>
-                    </tr>
-                    `
-                    } else {
-                        rowHtml = `
-                    <tr>
-                        <td colspan="2">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <input type="text" class="form-control label-input" name="label[]" placeholder="Label" value="${label}">
-                                <span class="review-row-btn ms-2"><i class="ti ti-trash"></i></span>
-                            </div>
-                        </td>
-                    </tr>
-                    `
-                    }
-
-                    tbody.append(rowHtml);
-
-                    if (type === 'color') {
-                        createPicker(pickerId, '#000000', `input[data-picker-id="${pickerId}"]`);
-                    }
-
-
-                })
-
-                if (labels.length > 0) {
-                    table.show();
-                } else {
-                    table.hide();
-                }
-            });
-
-            $(document).on('click', '.delete-btn', function() {
-                const $accordionItem = $(this).closest('.accordion-item');
-                $accordionItem.find('.color-preview').each(function() {
-                    destroyPicker($(this).attr('id'));
-                });
-
-                const productId = $(this).data('product-id');
-                const attributeId = $(this).data('attribute-id');
-
-                if (!attributeId) {
-                    $accordionItem.remove();
-                    return;
-                }
-
-
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: "{{ route('admin.products.attributes.destroy', [':id', ':attribute_id']) }}"
-                                .replace(':id', productId).replace(':attribute_id',
-                                    attributeId),
-                            method: 'DELETE',
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                $('#accordion-default').html(response.html);
-                                $('#accordion-variant').html('');
-                                $('#accordion-variant').append(response.variantHtml);
-                                response.html ? $('.disabled-placeholder').show() : $(
-                                    '.disabled-placeholder').hide();
-                                notyf.success(response.message);
-                            },
-                            error: function(xhr, status, error) {
-                                notyf.error(error);
-                            }
-                        })
-                    }
-                });
-
-
-            });
-
-            // save attribute
-            $(document).on('click', '.save-btn', function(e) {
-                e.preventDefault();
-                const form = $(this).closest('form');
-                const data = form.serialize();
-
-                $.ajax({
-                    url: "{{ route('admin.products.attributes.store', ':id') }}".replace(':id',
-                        '{{ $product->id }}'),
-                    method: 'POST',
-                    data: data,
-                    success: function(response) {
-                        $('#accordion-default').html(response.html);
-                        $('#accordion-variant').html('');
-                        $('#accordion-variant').append(response.variantHtml);
-                        response.html ? $('.disabled-placeholder').show() : $(
-                            '.disabled-placeholder').hide();
-
-                        initColorPickersInContainer($('#accordion-default'));
-                        notyf.success(response.message);
-                    },
-                    error: function(xhr, status, error) {
-
-                    }
-                })
-            })
-
-            // Initialize color pickers on load
-            $(document).ready(function() {
-                initColorPickersInContainer($('#accordion-default'));
-            })
-
-            $(document).on('change', '.variant-manage-stock', function() {
-                const isChecked = $(this).is(':checked');
-                const element = $(this).closest('.col-md-12').find('.variant-quantity').toggle(isChecked);
-            })
-
-            // variant update
-            $(document).on('click', '.variant-save-btn', function(e) {
-                e.preventDefault();
-                const form = $(this).closest('.variant-form');
-                const data = form.serialize();
-
-                $.ajax({
-                    url: "{{ route('admin.products.variants.update', ':productId') }}".replace(
-                        ':productId', '{{ $product->id }}'),
-                    method: 'POST',
-                    data: data,
-                    success: function(response) {
-                        notyf.success(response.message);
-                    },
-                    error: function(xhr, status, error) {
-                        const errors = xhr.responseJSON.errors;
-                        $.each(errors, function(key, value) {
-                            notyf.error(errors[key][0]);
-                        });
-                    }
-                })
-            })
-        })
-    </script>
 
     <script>
         $(document).on('change', '.category-check', function() {
@@ -1030,6 +701,74 @@
 
         })
 
+        // file chunking upload
+        const fileUploader = new Dropzone("#fileUploader", {
+            url: "{{ route('admin.digital-products.file.upload') }}",
+            paramName: "file",
+            maxFilesize: 1024,
+            chunking: true,
+            forceChunking: true,
+            chunkSize: 1024 * 1024, // 1 MB per chunk,
+            parallelUploads: 1,
+            acceptedFiles: "image/*, application/pdf, video/*, audio/*, application/zip, application/octent-stream, application/x-zip-compressed, application/x-rar-compressed",
+            addRemoveLinks: false,
+            autoProcessQueue: true,
+            uploadMultiple: false,
+            previewsContainer: `#filePreviewContainer`,
+            previewTemplate: `<div class="dz-preview dz-file-preview">
+            <div class="dz-filename"><span data-dz-name></span></div>
+            <div class="dz-progress"><div class="dz-upload" data-dz-uploadprogress></div></div>
+            <div class="dz-percentage"><span class="progress-text">0</span>% uploaded</div>
+            <div class="dz-remove" data-dz-remove>&times;</div>
+        </div>`,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            init: function() {
+
+                this.on("uploadprogress", function(file, progress) {
+                    file.previewElement.querySelector(".progress-text").textContent = progress.toFixed(
+                        0);
+                })
+
+                this.on("sending", function(file, xhr, formData) {
+                    formData.append("name", file.upload.filename);
+                    formData.append("product_id", "{{ $product->id }}");
+                })
+
+                this.on("success", function(file, response) {
+                    window.location.reload();
+                })
+
+                this.on("error", function(file, response) {
+                    console.error(response);
+                    if (response.status === 'error') {
+                        notyf.error(response.message);
+                    }
+                })
+            }
+
+        })
+
+        $(document).on('click', '.dz-remove', function() {
+            const id = $(this).attr('data-file-id');
+            $.ajax({
+                method: 'DELETE',
+                url: "{{ route('admin.digital-products.file.destroy', [':productId', ':id']) }}".replace(
+                    ':id', id).replace(':productId', '{{ $product->id }}'),
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    window.location.reload();
+
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr);
+                }
+            })
+        })
+
         function addUploadPlaceholder(placeholderId) {
             const placeholderHtml = `
             <div id="${placeholderId}" class="image-preview-item">
@@ -1107,18 +846,19 @@
                 }
             })
         }
-
         // slug auto-generate
-        $('#name').on('input', function() {
-            $('#slug').val(slugify($(this).val()));
+        $(function() {
+            $('#name').on('input', function() {
+                $('#slug').val(slugify($(this).val()));
+            })
+
+
+            function slugify(text) {
+                return text.toString().toLowerCase().replace(/\s+/g, '-')
+                    .replace(/[^a-z0-9\-]/g, '')
+                    .replace(/\-+/g, '-')
+                    .replace(/^\-+|\-+$/g, '');
+            }
         })
-
-
-        function slugify(text) {
-            return text.toString().toLowerCase().replace(/\s+/g, '-')
-                .replace(/[^a-z0-9\-]/g, '')
-                .replace(/\-+/g, '-')
-                .replace(/^\-+|\-+$/g, '');
-        }
     </script>
 @endpush
