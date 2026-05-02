@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('vendor-dashboard.layouts.app')
 
 @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
@@ -101,7 +101,7 @@
                         {{-- <div class="card-header">
                         <h3 class="card-title">Create Roles</h3>
                         <div class="card-actions">
-                            <a href="{{ route('admin.role.index') }}" class="btn btn-primary">Back</a>
+                            <a href="{{ route('vendor.role.index') }}" class="btn btn-primary">Back</a>
                         </div>
                     </div> --}}
                         <div class="card-body">
@@ -273,7 +273,7 @@
                             <div class="col-md-12">
                                 <div class="accordion" id="accordion-default">
                                     @foreach ($attributesWithValues as $attribute)
-                                        @include('admin.product.partials.attribute', [
+                                        @include('vendor.product.partials.attribute', [
                                             '$attribute' => $attribute,
                                             'product' => $product,
                                         ])
@@ -294,7 +294,7 @@
                             <div class="col-md-12">
                                 <div class="accordion" id="accordion-variant">
                                     @foreach ($variants as $variant)
-                                        @include('admin.product.partials.variant', [
+                                        @include('vendor.product.partials.variant', [
                                             'variant' => $variant,
                                         ])
                                     @endforeach
@@ -821,7 +821,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "{{ route('admin.products.attributes.destroy', [':id', ':attribute_id']) }}"
+                            url: "{{ route('vendor.products.attributes.destroy', [':id', ':attribute_id']) }}"
                                 .replace(':id', productId).replace(':attribute_id',
                                     attributeId),
                             method: 'DELETE',
@@ -853,7 +853,7 @@
                 const data = form.serialize();
 
                 $.ajax({
-                    url: "{{ route('admin.products.attributes.store', ':id') }}".replace(':id',
+                    url: "{{ route('vendor.products.attributes.store', ':id') }}".replace(':id',
                         '{{ $product->id }}'),
                     method: 'POST',
                     data: data,
@@ -890,7 +890,7 @@
                 const data = form.serialize();
 
                 $.ajax({
-                    url: "{{ route('admin.products.variants.update', ':productId') }}".replace(
+                    url: "{{ route('vendor.products.variants.update', ':productId') }}".replace(
                         ':productId', '{{ $product->id }}'),
                     method: 'POST',
                     data: data,
@@ -981,7 +981,7 @@
 
                 $.ajax({
                     method: 'POST',
-                    url: "{{ route('admin.products.update', ':id') }}".replace(':id',
+                    url: "{{ route('vendor.products.update', ':id') }}".replace(':id',
                         '{{ $product->id }}'),
                     data: data,
                     contentType: false,
@@ -1004,7 +1004,7 @@
         // dropzone image upload
         Dropzone.autoDiscover = false;
         const imageUploader = new Dropzone("#imageUploader", {
-            url: "{{ route('admin.products.images.upload', ':id') }}".replace(':id', '{{ $product->id }}'),
+            url: "{{ route('vendor.products.images.upload', ':id') }}".replace(':id', '{{ $product->id }}'),
             pramName: "Image",
             maxFileSize: 10,
             acceptedFiles: "image/*",
@@ -1059,7 +1059,7 @@
             const element = this;
             $.ajax({
                 method: 'DELETE',
-                url: "{{ route('admin.products.images.destroy', ':id') }}".replace(':id', imageId),
+                url: "{{ route('vendor.products.images.destroy', ':id') }}".replace(':id', imageId),
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
@@ -1093,7 +1093,7 @@
             });
 
             $.ajax({
-                url: "{{ route('admin.products.images.reorder') }}",
+                url: "{{ route('vendor.products.images.reorder') }}",
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
