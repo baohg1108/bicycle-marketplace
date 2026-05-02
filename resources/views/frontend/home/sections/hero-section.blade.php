@@ -4,161 +4,44 @@
                <div class="col-lg-2 d-none d-xxl-flex">
                    <div class="categories-dropdown-wrap style-2 font-heading mt-30">
                        <div class="d-flex categori-dropdown-inner">
+
                            <ul>
-                               <li>
-                                   <a href="#">
-                                       <img src="{{ asset('assets/frontend/dist/imgs/icons/bicycle.png') }}"
-                                           alt="" />
-                                       Xe Đạp
-                                   </a>
-                                   <ul>
-                                       <li><a href="#">Thể Thao</a></li>
-                                       <li><a href="#">Đua</a></li>
-                                       <li><a href="#">Địa Hình</a></li>
-                                       <li><a href="#">Gấp</a></li>
-                                       <li><a href="#">Thành Phố</a></li>
-                                   </ul>
-                               </li>
-                               <li>
-                                   <a href="#">
-                                       <img src="{{ asset('assets/frontend/dist/imgs/icons/shirt.png') }}"
-                                           alt="" />
-                                       Áo
-                                   </a>
-                                   <ul>
-                                       <li><a href="#">Menu 01</a></li>
-                                       <li><a href="#">Menu 02</a></li>
-                                       <li><a href="#">Menu 03</a></li>
-                                       <li><a href="#">Menu 04</a></li>
-                                       <li><a href="#">Menu 05</a></li>
-                                   </ul>
-                               </li>
-                               <li>
-                                   <a href="#">
-                                       <img src="{{ asset('assets/frontend/dist/imgs/icons/balo.png') }}"
-                                           alt="" />
-                                       Balo - Túi
-                                   </a>
-                                   <ul>
-                                       <li><a href="#">Menu 01</a></li>
-                                       <li><a href="#">Menu 02</a></li>
-                                       <li><a href="#">Menu 03</a></li>
-                                       <li><a href="#">Menu 04</a></li>
-                                       <li><a href="#">Menu 05</a></li>
-                                   </ul>
-                               </li>
-                               <li>
-                                   <a href="#">
-                                       <img src="{{ asset('assets/frontend/dist/imgs/icons/glove.png') }}"
-                                           alt="" />
-                                       Găng Tay
-                                   </a>
-                                   <ul>
-                                       <li><a href="#">Menu 01</a></li>
-                                       <li><a href="#">Menu 02</a></li>
-                                       <li><a href="#">Menu 03</a></li>
-                                       <li><a href="#">Menu 04</a></li>
-                                       <li><a href="#">Menu 05</a></li>
-                                   </ul>
-                               </li>
-                               <li>
-                                   <a href="#">
-                                       <img src="{{ asset('assets/frontend/dist/imgs/icons/shoe.png') }}"
-                                           alt="" />
-                                       Giày
-                                   </a>
-                                   <ul>
-                                       <li><a href="#">Menu 01</a></li>
-                                       <li><a href="#">Menu 02</a></li>
-                                       <li><a href="#">Menu 03</a></li>
-                                       <li><a href="#">Menu 04</a></li>
-                                       <li><a href="#">Menu 05</a></li>
-                                   </ul>
-                               </li>
-                               <li>
-                                   <a href="#">
-                                       <img src="{{ asset('assets/frontend/dist/imgs/icons/glasses.png') }}"
-                                           alt="" />
-                                       Mắt Kính
-                                   </a>
-                                   <ul>
-                                       <li><a href="#">Menu 01</a></li>
-                                       <li><a href="#">Menu 02</a></li>
-                                       <li><a href="#">Menu 03</a></li>
-                                       <li><a href="#">Menu 04</a></li>
-                                       <li><a href="#">Menu 05</a></li>
-                                   </ul>
-                               </li>
-                               <li>
-                                   <a href="#">
-                                       <img src="{{ asset('assets/frontend/dist/imgs/icons/helmet.png') }}"
-                                           alt="" />
-                                       Nón Bảo Hiểm
-                                   </a>
-                                   <ul>
-                                       <li><a href="#">Menu 01</a></li>
-                                       <li><a href="#">Menu 02</a></li>
-                                       <li><a href="#">Menu 03</a></li>
-                                       <li><a href="#">Menu 04</a></li>
-                                       <li><a href="#">Menu 05</a></li>
-                                   </ul>
-                               </li>
-                               <li>
-                                   <a href="#">
-                                       <img src="{{ asset('assets/frontend/dist/imgs/icons/cap.png') }}"
-                                           alt="" />
-                                       Nón Lưỡi Trai
-                                   </a>
-                                   <ul>
-                                       <li><a href="#">Menu 01</a></li>
-                                       <li><a href="#">Menu 02</a></li>
-                                       <li><a href="#">Menu 03</a></li>
-                                       <li><a href="#">Menu 04</a></li>
-                                       <li><a href="#">Menu 05</a></li>
-                                   </ul>
-                               </li>
-                               <li>
-                                   <a href="#">
-                                       <img src="{{ asset('assets/frontend/dist/imgs/icons/sleeve.png') }}"
-                                           alt="" />
-                                       Ống Tay
-                                   </a>
-                                   <ul>
-                                       <li><a href="#">Menu 01</a></li>
-                                       <li><a href="#">Menu 02</a></li>
-                                       <li><a href="#">Menu 03</a></li>
-                                       <li><a href="#">Menu 04</a></li>
-                                       <li><a href="#">Menu 05</a></li>
-                                   </ul>
-                               </li>
-                               <li>
-                                   <a href="#">
-                                       <img src="{{ asset('assets/frontend/dist/imgs/icons/trouser.png') }}"
-                                           alt="" />
-                                       Quần
-                                   </a>
-                                   <ul>
-                                       <li><a href="#">Menu 01</a></li>
-                                       <li><a href="#">Menu 02</a></li>
-                                       <li><a href="#">Menu 03</a></li>
-                                       <li><a href="#">Menu 04</a></li>
-                                       <li><a href="#">Menu 05</a></li>
-                                   </ul>
-                               </li>
-                               <li>
-                                   <a href="#">
-                                       <img src="{{ asset('assets/frontend/dist/imgs/icons/sock.png') }}"
-                                           alt="" />
-                                       Vớ
-                                   </a>
-                                   <ul>
-                                       <li><a href="#">Menu 01</a></li>
-                                       <li><a href="#">Menu 02</a></li>
-                                       <li><a href="#">Menu 03</a></li>
-                                       <li><a href="#">Menu 04</a></li>
-                                       <li><a href="#">Menu 05</a></li>
-                                   </ul>
-                               </li>
+                               @foreach (getNestedCategories() as $category)
+                                   <li>
+                                       {{-- <a href="{{ route('products.index', ['category' => $category->slug]) }}"> --}}
+                                       <a href="#">
+                                           <img src="{{ asset($category->icon) }}" alt="" />
+                                           <span>{{ $category->name }}</span>
+                                       </a>
+                                       @if (count($category->children_nested) > 0)
+                                           <ul>
+                                               @foreach ($category->children_nested as $child)
+                                                   <li
+                                                       class="{{ count($child->children_nested) > 0 ? '' : 'no_child' }}">
+                                                       {{-- <a
+                                                           href="{{ route('products.index', ['category' => $child->slug]) }}">
+                                                           {{ $child->name }}
+                                                       </a> --}}
+                                                       <a href="#"> {{ $child->name }}</a>
+                                                       @if (count($child->children_nested) > 0)
+                                                           <ul>
+                                                               @foreach ($child->children_nested as $subchild)
+                                                                   <li class="no_child">
+                                                                       {{-- <a
+                                                                           href="{{ route('products.index', ['category' => $subchild->slug]) }}">
+                                                                           {{ $subchild->name }}
+                                                                       </a> --}}
+                                                                       <a href="#"> {{ $subchild->name }}</a>
+                                                                   </li>
+                                                               @endforeach
+                                                           </ul>
+                                                       @endif
+                                                   </li>
+                                               @endforeach
+                                           </ul>
+                                       @endif
+                                   </li>
+                               @endforeach
                            </ul>
                        </div>
                        <a href="#" class="more_categories">
@@ -192,8 +75,7 @@
                    <div class="row">
                        <div class="col-12 col-md-6 col-lg-12">
                            <div class="banner-img style-4 mt-30">
-                               <img src="{{ asset('assets/frontend/dist/imgs/banner/banner-4.png') }}"
-                                   alt="" />
+                               <img src="{{ asset('assets/frontend/dist/imgs/banner/banner-4.png') }}" alt="" />
                                <div class="banner-text">
                                    {{-- <h4 class="mb-30">Hi-Res Audio Headphones</h4> --}}
                                    {{-- <a href="shop-grid-right.html" class="btn btn-xs mb-50">Shop Now <i
@@ -203,8 +85,7 @@
                        </div>
                        <div class="col-12 col-md-6 col-lg-12">
                            <div class="banner-img style-5 mt-5 mt-md-30">
-                               <img src="{{ asset('assets/frontend/dist/imgs/banner/banner-5.png') }}"
-                                   alt="" />
+                               <img src="{{ asset('assets/frontend/dist/imgs/banner/banner-5.png') }}" alt="" />
                                <div class="banner-text">
                                    {{-- <h5 class="mb-20">Men’s Leather <br> Waterproof Boots</h5>
                                    <a href="shop-grid-right.html" class="btn btn-xs">Shop Now <i
