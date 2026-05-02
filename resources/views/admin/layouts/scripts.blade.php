@@ -69,7 +69,7 @@
         });
     })
 
-    notyf init
+    // notyf init
     var notyf = new Notyf({
         duration: 3000
     });
