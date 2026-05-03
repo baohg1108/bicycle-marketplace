@@ -53,20 +53,17 @@
                <div class="col-lg-8 col-xl-9 col-xxl-7">
                    <div class="home-slide-cover mt-30">
                        <div class="hero-slider-1 style-5 dot-style-1 dot-style-1-position-2">
-                           <div class="single-hero-slider single-animation-wrap"
-                               style="background-image: url(assets/frontend/dist/imgs/banner/banner-3.avif)">
-                               <div class="slider-content">
-                                   <a href="shop-grid-right.html" class="btn">Shop Now <i
-                                           class="fi-rs-arrow-small-right"></i></a>
+                           @foreach ($sliders as $slider)
+                               <div class="single-hero-slider single-animation-wrap"
+                                   style="background-image: url({{ asset($slider->image) }})">
+                                   <div class="slider-content">
+                                       <h1 class="display-2 mb-15">{{ $slider->title }}</h1>
+                                       <p>{{ $slider->sub_title }}</p>
+                                       <a href="{{ $slider->btn_url }}" class="btn">Shop Now <i
+                                               class="fi-rs-arrow-small-right"></i></a>
+                                   </div>
                                </div>
-                           </div>
-                           <div class="single-hero-slider single-animation-wrap"
-                               style="background-image: url(assets/frontend/dist/imgs/banner/banner-2.avif)">
-                               <div class="slider-content">
-                                   <a href="shop-grid-right.html" class="btn">Shop Now <i
-                                           class="fi-rs-arrow-small-right"></i></a>
-                               </div>
-                           </div>
+                           @endforeach
                        </div>
                        <div class="slider-arrow hero-slider-1-arrow"></div>
                    </div>
@@ -85,7 +82,8 @@
                        </div>
                        <div class="col-12 col-md-6 col-lg-12">
                            <div class="banner-img style-5 mt-5 mt-md-30">
-                               <img src="{{ asset('assets/frontend/dist/imgs/banner/banner-5.png') }}" alt="" />
+                               <img src="{{ asset('assets/frontend/dist/imgs/banner/banner-5.png') }}"
+                                   alt="" />
                                <div class="banner-text">
                                    {{-- <h5 class="mb-20">Men’s Leather <br> Waterproof Boots</h5>
                                    <a href="shop-grid-right.html" class="btn btn-xs">Shop Now <i
