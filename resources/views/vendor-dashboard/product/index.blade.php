@@ -12,10 +12,8 @@
                             Create Product
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item"
-                                    href="{{ route('vendor.products.create', ['type' => 'physical']) }}">Physical</a></li>
-                            <li><a class="dropdown-item"
-                                    href="{{ route('vendor.products.create', ['type' => 'digital']) }}">Digital</a></li>
+                            <li><a class="dropdown-item" href="{{ route('vendor.products.create', ['type' => 'physical']) }}">Physical</a></li>
+                            <li><a class="dropdown-item" href="{{ route('vendor.products.create', ['type' => 'digital']) }}">Digital</a></li>
                         </ul>
                     </div>
                 </div>
@@ -46,14 +44,14 @@
                                             alt=""></td>
                                     <td>
                                         <div>
-                                            @if ($product->product_type == 'physical')
-                                                <a href="{{ route('vendor.products.edit', $product->id) }}">
-                                                    {{ $product->name }}
-                                                </a>
+                                            @if($product->product_type == 'physical')
+                                            <a href="{{ route('vendor.products.edit', $product->id) }}">
+                                                {{ $product->name }}
+                                            </a>
                                             @else
-                                                <a href="{{ route('vendor.digital-products.edit', $product->id) }}">
-                                                    {{ $product->name }}
-                                                </a>
+                                            <a href="{{ route('vendor.digital-products.edit', $product->id) }}">
+                                                {{ $product->name }}
+                                            </a>
                                             @endif
                                         </div>
                                         <small
@@ -141,21 +139,17 @@
                                         {{ $product->store->name }}
                                     </td>
                                     <td>
-                                        @if ($product->product_type == 'physical')
-                                            <a href="{{ route('vendor.products.edit', $product->id) }}"
-                                                class="btn btn-sm btn-primary"><i class="ti ti-edit"></i></a>
+                                        @if($product->product_type == 'physical')
+                                        <a href="{{ route('vendor.products.edit', $product->id) }}" class="btn btn-sm btn-primary"><i class="ti ti-edit"></i></a>
                                         @else
-                                            <a href="{{ route('vendor.digital-products.edit', $product->id) }}"
-                                                class="btn btn-sm btn-primary"><i class="ti ti-edit"></i></a>
+                                        <a href="{{ route('vendor.digital-products.edit', $product->id) }}" class="btn btn-sm btn-primary"><i class="ti ti-edit"></i></a>
                                         @endif
-                                        <a class="delete-item btn btn-sm btn-danger mt-2"
-                                            href="{{ route('vendor.products.destroy', $product) }}"><i
-                                                class="ti ti-trash"></i></a>
+                                        <a class="delete-item btn btn-sm btn-danger mt-2" href="{{ route('vendor.products.destroy', $product) }}" ><i class="ti ti-trash"></i></a>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="10" class="text-center">No Items</td>
+                                    <td colspan="4" class="text-center">No Roles</td>
                                 </tr>
                             @endforelse
 
@@ -163,7 +157,6 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    {{ $products->links() }}
                 </div>
             </div>
         </div>

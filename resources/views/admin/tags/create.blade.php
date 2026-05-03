@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.tags.store') }}" method="POST">
+                <form action="{{ route('admin.tags.store') }}" method="POST" class="tag-form">
                     @csrf
                     <div class="row">
                         <div class="col-md-12">
@@ -23,18 +23,19 @@
 
                         <div class="col-md-2">
                             <div class="mb-2">
-                            <label class="form-check from-switch form-switch-3">
-                                <input class="form-check-input" type="checkbox" checked="" name="status" id="status"></input>
-                                <span class="form-check-label">Active</span>
-                        </label>
-                        </div>
+                                <label class="form-check from-switch form-switch-3">
+                                    <input class="form-check-input" type="checkbox" checked="" name="status"
+                                        id="status"></input>
+                                    <span class="form-check-label">Active</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
 
                 </form>
             </div>
             <div class="card-footer text-end">
-                <button class="btn btn-primary mt-3" onclick="$('form').submit()">Create</button>
+                <button class="btn btn-primary mt-3" onclick="$('.tag-form').submit()">Create</button>
 
             </div>
         </div>

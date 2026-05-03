@@ -17,6 +17,14 @@ if (! function_exists('hasPermission')) {
     }
 }
 
+
+/** get user */
+if (!function_exists('user')) {
+    function user(): User | null
+    {
+        return Auth::user('web');
+    }
+}
 // Get nested categories
 if (! function_exists('getNestedCategories')) {
     function getNestedCategories()
