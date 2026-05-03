@@ -290,6 +290,11 @@
                                             Slider
                                         </a>
                                     </div>
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item" href="{{ route('admin.hero-banners.index') }}">
+                                            Hero Banner
+                                        </a>
+                                    </div>
                                 @endif
 
                             </div>
