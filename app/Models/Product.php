@@ -158,7 +158,7 @@ class Product extends Model
                     );
                 }
 
-                if(!$variant->manage_stock && $variant->in_stock) {
+                if (!$variant->manage_stock && $variant->in_stock) {
                     return $getPriceData(
                         $variant->id,
                         $variant->price,
@@ -169,15 +169,13 @@ class Product extends Model
                 }
 
                 return $getPriceData(
-                        $variant->id,
-                        $variant->price,
-                        $variant->special_price,
-                        false,
-                        null
+                    $variant->id,
+                    $variant->price,
+                    $variant->special_price,
+                    false,
+                    null
                 );
-
             }
-
         }
 
         // No variants exist, fallback to product-level stock
@@ -190,14 +188,14 @@ class Product extends Model
         return $getPriceData(null, $this->price, $this->special_price, $inStock, $qty);
     }
 
-    function reviews() : HasMany
-    {
-        return $this->hasMany(ProductReview::class, 'product_id');
-    }
+    // function reviews() : HasMany
+    // {
+    //     return $this->hasMany(ProductReview::class, 'product_id');
+    // }
 
-    function rating() : float
+    function rating(): float
     {
-        if(!$this->reviews()->exists()) return 0;
+        if (!$this->reviews()->exists()) return 0;
 
         return round($this->reviews()->avg('rating'), 1);
     }
