@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +12,8 @@ class Category extends Model
         'parent_id',
         'position',
         'is_active',
+        "image",
+        "icon",
     ];
 
     public function parent()
@@ -25,11 +26,11 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id');
     }
 
-        function allChildrenIds() : array
+    public function allChildrenIds(): array
     {
         $ids = [];
 
-        foreach($this->children as $child) {
+        foreach ($this->children as $child) {
             $ids[] = $child->id;
 
             $ids = array_merge($ids, $child->allChildrenIds());
@@ -38,20 +39,22 @@ class Category extends Model
         return $ids;
     }
 
-
-    static function getNested($parentId = null, $depth=0, $maxDepth = 3)
+    public static function getNested($parentId = null, $depth = 0, $maxDepth = 3)
     {
-        if($depth >= $maxDepth) return [];
+        if ($depth >= $maxDepth) {
+            return [];
+        }
+
         $categories = self::where('parent_id', $parentId)->orderBy('position')->get();
 
         foreach ($categories as $cat) {
             $cat->children_nested = self::getNested($cat->id, $depth + 1, $maxDepth);
         }
         return $categories;
-        
+
     }
 
-    function products() : BelongsToMany
+    public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);
     }

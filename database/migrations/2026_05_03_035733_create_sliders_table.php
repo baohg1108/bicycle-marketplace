@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('sliders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('parent_id')->nullable()->index();
-            $table->string('name');
-            $table->string('slug');
-            $table->integer('position');
-            $table->string('image')->nullable();
-            $table->string('icon')->nullable();
-            $table->boolean('is_featured')->nullable();
+            $table->string('image');
+            $table->string('title');
+            $table->string('sub_title');
+            $table->string('btn_url');
             $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('sliders');
     }
 };

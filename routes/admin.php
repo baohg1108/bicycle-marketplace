@@ -10,10 +10,12 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\HeroBannerController;
 use App\Http\Controllers\Admin\KycRequestController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserRoleController;
 use App\Http\Controllers\SettingController;
@@ -112,19 +114,22 @@ Route::middleware('auth:admin')
         Route::delete("/products/images/{image}", [ProductController::class, 'destroyImage'])->name("products.images.destroy");
         Route::post("/products/images/reorder", [ProductController::class, 'imagesReorder'])->name("products.images.reorder");
 
-         /** Product Attributes Routes */
+        /** Product Attributes Routes */
         Route::post('/products/attributes/{product}/store', [ProductController::class, 'storeAttributes'])->name('products.attributes.store');
         Route::delete('/products/attributes/{product}/{attribute}', [ProductController::class, 'destroyAttribute'])->name('products.attributes.destroy');
 
         /** Product Variants Routes */
         Route::post('/products/variants/{product}/update', [ProductController::class, 'updateVariants'])->name('products.variants.update');
-          Route::post('/products/digital/file-upload', [ProductController::class, 'uploadDigitalProductFile'])->name('digital-products.file.upload');
+        Route::post('/products/digital/file-upload', [ProductController::class, 'uploadDigitalProductFile'])->name('digital-products.file.upload');
         Route::delete('/products/digital/{product}/{file}', [ProductController::class, 'destroyDigitalProductFile'])->name('digital-products.file.destroy');
 
         Route::get('/products/digital/{product}/edit', [ProductController::class, 'editDigitalProduct'])->name('digital-products.edit');
 
-         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-        
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+        //  Slider Routes
+        Route::resource("/sliders", SliderController::class);
+        Route::resource("/hero-banners", HeroBannerController::class);
 
         // setting
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');

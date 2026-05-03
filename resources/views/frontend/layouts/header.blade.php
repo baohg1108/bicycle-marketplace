@@ -184,163 +184,45 @@
                          <div
                              class="categories-dropdown-wrap style-2 font-heading categories-dropdown-active-large font-heading">
                              <div class="d-flex categori-dropdown-inner">
+
                                  <ul>
-                                     <li>
-                                         <a href="#">
-                                             <img src="assets/imgs/theme/icons/category-1.svg" alt="" />
-                                             Men's Clothing
-                                         </a>
-                                         <ul>
-                                             <li><a href="#">Menu 01</a></li>
-                                             <li><a href="#">Menu 02</a></li>
-                                             <li><a href="#">Menu 03</a></li>
-                                             <li><a href="#">Menu 04</a></li>
-                                             <li><a href="#">Menu 05</a></li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a href="#">
-                                             <img src="assets/imgs/theme/icons/category-2.svg" alt="" />
-                                             Women's Clothing
-                                         </a>
-                                         <ul>
-                                             <li><a href="#">Menu 01</a></li>
-                                             <li><a href="#">Menu 02</a></li>
-                                             <li><a href="#">Menu 03</a></li>
-                                             <li><a href="#">Menu 04</a></li>
-                                             <li><a href="#">Menu 05</a></li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a href="#">
-                                             <img src="assets/imgs/theme/icons/category-3.svg" alt="" />
-                                             Jewelry & Fashion
-                                         </a>
-                                         <ul>
-                                             <li><a href="#">Menu 01</a></li>
-                                             <li><a href="#">Menu 02</a></li>
-                                             <li><a href="#">Menu 03</a></li>
-                                             <li><a href="#">Menu 04</a></li>
-                                             <li><a href="#">Menu 05</a></li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a href="#">
-                                             <img src="assets/imgs/theme/icons/category-4.svg" alt="" />
-                                             Sports Apparel
-                                         </a>
-                                         <ul>
-                                             <li><a href="#">Menu 01</a></li>
-                                             <li><a href="#">Menu 02</a></li>
-                                             <li><a href="#">Menu 03</a></li>
-                                             <li><a href="#">Menu 04</a></li>
-                                             <li><a href="#">Menu 05</a></li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a href="#">
-                                             <img src="assets/imgs/theme/icons/category-5.svg" alt="" />
-                                             Skincare
-                                         </a>
-                                         <ul>
-                                             <li><a href="#">Menu 01</a></li>
-                                             <li><a href="#">Menu 02</a></li>
-                                             <li><a href="#">Menu 03</a></li>
-                                             <li><a href="#">Menu 04</a></li>
-                                             <li><a href="#">Menu 05</a></li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a href="#">
-                                             <img src="assets/imgs/theme/icons/category-6.svg" alt="" />
-                                             Exercise & Fitness
-                                         </a>
-                                         <ul>
-                                             <li><a href="#">Menu 01</a></li>
-                                             <li><a href="#">Menu 02</a></li>
-                                             <li><a href="#">Menu 03</a></li>
-                                             <li><a href="#">Menu 04</a></li>
-                                             <li><a href="#">Menu 05</a></li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a href="#">
-                                             <img src="assets/imgs/theme/icons/category-7.svg" alt="" />
-                                             Toys & Games
-                                         </a>
-                                         <ul>
-                                             <li><a href="#">Menu 01</a></li>
-                                             <li><a href="#">Menu 02</a></li>
-                                             <li><a href="#">Menu 03</a></li>
-                                             <li><a href="#">Menu 04</a></li>
-                                             <li><a href="#">Menu 05</a></li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a href="#">
-                                             <img src="assets/imgs/theme/icons/category-8.svg" alt="" />
-                                             Sunglasses
-                                         </a>
-                                         <ul>
-                                             <li><a href="#">Menu 01</a></li>
-                                             <li><a href="#">Menu 02</a></li>
-                                             <li><a href="#">Menu 03</a></li>
-                                             <li><a href="#">Menu 04</a></li>
-                                             <li><a href="#">Menu 05</a></li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a href="#">
-                                             <img src="assets/imgs/theme/icons/category-9.svg" alt="" />
-                                             Denim Collection
-                                         </a>
-                                         <ul>
-                                             <li><a href="#">Menu 01</a></li>
-                                             <li><a href="#">Menu 02</a></li>
-                                             <li><a href="#">Menu 03</a></li>
-                                             <li><a href="#">Menu 04</a></li>
-                                             <li><a href="#">Menu 05</a></li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a href="#">
-                                             <img src="assets/imgs/theme/icons/category-1.svg" alt="" />
-                                             Men's Clothing
-                                         </a>
-                                         <ul>
-                                             <li><a href="#">Menu 01</a></li>
-                                             <li><a href="#">Menu 02</a></li>
-                                             <li><a href="#">Menu 03</a></li>
-                                             <li><a href="#">Menu 04</a></li>
-                                             <li><a href="#">Menu 05</a></li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a href="#">
-                                             <img src="assets/imgs/theme/icons/category-2.svg" alt="" />
-                                             Women's Clothing
-                                         </a>
-                                         <ul>
-                                             <li><a href="#">Menu 01</a></li>
-                                             <li><a href="#">Menu 02</a></li>
-                                             <li><a href="#">Menu 03</a></li>
-                                             <li><a href="#">Menu 04</a></li>
-                                             <li><a href="#">Menu 05</a></li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a href="#">
-                                             <img src="assets/imgs/theme/icons/category-3.svg" alt="" />
-                                             Jewelry & Fashion
-                                         </a>
-                                         <ul>
-                                             <li><a href="#">Menu 01</a></li>
-                                             <li><a href="#">Menu 02</a></li>
-                                             <li><a href="#">Menu 03</a></li>
-                                             <li><a href="#">Menu 04</a></li>
-                                             <li><a href="#">Menu 05</a></li>
-                                         </ul>
-                                     </li>
+                                     @foreach (getNestedCategories() as $category)
+                                         <li>
+                                             {{-- <a href="{{ route('products.index', ['category' => $category->slug]) }}"> --}}
+                                             <a href="#">
+                                                 <img src="{{ asset($category->icon) }}" alt="" />
+                                                 <span>{{ $category->name }}</span>
+                                             </a>
+                                             @if (count($category->children_nested) > 0)
+                                                 <ul>
+                                                     @foreach ($category->children_nested as $child)
+                                                         <li
+                                                             class="{{ count($child->children_nested) > 0 ? '' : 'no_child' }}">
+                                                             {{-- <a
+                                                           href="{{ route('products.index', ['category' => $child->slug]) }}">
+                                                           {{ $child->name }}
+                                                       </a> --}}
+                                                             <a href="#"> {{ $child->name }}</a>
+                                                             @if (count($child->children_nested) > 0)
+                                                                 <ul>
+                                                                     @foreach ($child->children_nested as $subchild)
+                                                                         <li class="no_child">
+                                                                             {{-- <a
+                                                                           href="{{ route('products.index', ['category' => $subchild->slug]) }}">
+                                                                           {{ $subchild->name }}
+                                                                       </a> --}}
+                                                                             <a href="#">
+                                                                                 {{ $subchild->name }}</a>
+                                                                         </li>
+                                                                     @endforeach
+                                                                 </ul>
+                                                             @endif
+                                                         </li>
+                                                     @endforeach
+                                                 </ul>
+                                             @endif
+                                         </li>
+                                     @endforeach
                                  </ul>
                              </div>
                              <a href="#" class="more_categories">
