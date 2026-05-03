@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\KycController;       
 use App\Http\Controllers\Frontend\ProductPageController;
@@ -15,7 +16,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/products', [ProductPageController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [ProductPageController::class, 'show'])->name('products.show');
 
-// Cart routes (add controllers here when ready)
+// Cart routes
+ROute::get('/cart', [CartController::class, 'index'])->name('cart.index');
+ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
@@ -28,6 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // KYC routes
     Route::get('/kyc-verification', [KycController::class, 'index'])->name('kyc.index');
     Route::post('/kyc-verification', [KycController::class, 'store'])->name('kyc.store');
+
+
 });
 
 // Vendor routes

@@ -27,7 +27,7 @@ class ProductStoreRequest extends FormRequest
             'quantity' => ['nullable', 'numeric'],
             'stock_status' => ['required', 'in:in_stock,out_of_stock'],
             'status' => ['required', 'in:active,draft,pending,inactive'],
-            'store' => ['required', 'exists:stores,id'],
+            // 'store' => ['required', 'exists:stores,id'],
             'is_featured' => ['nullable'],
             'categories' => ['required', 'array'],
             'categories.*' => ['required', 'exists:categories,id'],

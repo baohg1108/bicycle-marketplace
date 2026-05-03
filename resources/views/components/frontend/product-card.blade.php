@@ -68,8 +68,9 @@
                     @endif
                 </div>
                 <div class="add-cart">
-                    <a class="add" href="shop-cart.html"><i class="fi-rs-shopping-cart mr-5"></i>Add
-                    </a>
+                    <a class="add add_to_cart" data-id="{{ $product->id }}"
+                        data-modal="{{ $product->primaryVariant ? 'true' : 'false' }}" href=""><i
+                            class="fi-rs-shopping-cart mr-5"></i>Add to cart</a>
                 </div>
             </div>
         </div>
