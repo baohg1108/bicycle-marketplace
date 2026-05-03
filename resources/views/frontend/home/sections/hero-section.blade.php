@@ -72,22 +72,21 @@
                    <div class="row">
                        <div class="col-12 col-md-6 col-lg-12">
                            <div class="banner-img style-4 mt-30">
-                               <img src="{{ asset('assets/frontend/dist/imgs/banner/banner-4.png') }}" alt="" />
+                               <img src="{{ asset($heroBanner->banner_one) }}" alt="" />
                                <div class="banner-text">
-                                   {{-- <h4 class="mb-30">Hi-Res Audio Headphones</h4> --}}
-                                   {{-- <a href="shop-grid-right.html" class="btn btn-xs mb-50">Shop Now <i
-                                           class="fi-rs-arrow-small-right"></i></a> --}}
+                                   <h4 class="mb-30"></h4>{{ $heroBanner->title_one }}</h4>
+                                   <a href="{{ $heroBanner->btn_url_one }}" class="btn btn-xs mb-50">Shop Now <i
+                                           class="fi-rs-arrow-small-right"></i></a>
                                </div>
                            </div>
                        </div>
                        <div class="col-12 col-md-6 col-lg-12">
                            <div class="banner-img style-5 mt-5 mt-md-30">
-                               <img src="{{ asset('assets/frontend/dist/imgs/banner/banner-5.png') }}"
-                                   alt="" />
+                               <img src="{{ asset($heroBanner->banner_two) }}" alt="" />
                                <div class="banner-text">
-                                   {{-- <h5 class="mb-20">Men’s Leather <br> Waterproof Boots</h5>
-                                   <a href="shop-grid-right.html" class="btn btn-xs">Shop Now <i
-                                           class="fi-rs-arrow-small-right"></i></a> --}}
+                                   <h5 class="mb-20">{{ $heroBanner->title_two }}</h5>
+                                   <a href="{{ $heroBanner->btn_url_two }}" class="btn btn-xs">Shop Now <i
+                                           class="fi-rs-arrow-small-right"></i></a>
                                </div>
                            </div>
                        </div>
