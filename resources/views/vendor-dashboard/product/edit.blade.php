@@ -273,7 +273,7 @@
                             <div class="col-md-12">
                                 <div class="accordion" id="accordion-default">
                                     @foreach ($attributesWithValues as $attribute)
-                                        @include('vendor.product.partials.attribute', [
+                                        @include('vendor-dashboard.product.partials.attribute', [
                                             '$attribute' => $attribute,
                                             'product' => $product,
                                         ])
@@ -294,7 +294,7 @@
                             <div class="col-md-12">
                                 <div class="accordion" id="accordion-variant">
                                     @foreach ($variants as $variant)
-                                        @include('vendor.product.partials.variant', [
+                                        @include('vendor-dashboard.product.partials.variant', [
                                             'variant' => $variant,
                                         ])
                                     @endforeach
@@ -304,24 +304,6 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h3 class="card-title">Approve Status</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <select name="approved_status" class="form-control" id="">
-                                        <option @selected($product->approved_status == 'pending') value="pending">Pending</option>
-                                        <option @selected($product->approved_status == 'approved') value="approved">Approved</option>
-                                        <option @selected($product->approved_status == 'rejected') value="rejected">Rejected</option>
-                                    </select>
-                                    <x-input-error :messages="$errors->get('status')" class="mt-2" />
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
                     <div class="card mb-3">
                         <div class="card-header">
                             <h3 class="card-title">Status</h3>
@@ -340,26 +322,7 @@
                         </div>
 
                     </div>
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h3 class="card-title">Store</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <select name="store" class="form-control select2" id="">
-                                        <option value="published">Select a store</option>
-                                        @foreach ($stores as $store)
-                                            <option @selected($product->store_id == $store->id) value="{{ $store->id }}">
-                                                {{ $store->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <x-input-error :messages="$errors->get('store')" class="mt-2" />
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
 
                     <div class="card mb-3">
                         <div class="card-header">

@@ -107,8 +107,7 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label class="form-label required">Name</label>
-                                    <input type="text" class="form-control" name="name" id="name" placeholder=""
-                                        value="">
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="" value="">
                                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
                                 </div>
                             </div>
@@ -116,8 +115,7 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label class="form-label required">Slug</label>
-                                    <input type="text" class="form-control" name="slug" id="slug" placeholder=""
-                                        value="">
+                                    <input type="text" class="form-control" name="slug" id="slug" placeholder="" value="">
                                     <x-input-error :messages="$errors->get('slug')" class="mt-2" />
                                 </div>
                             </div>
@@ -245,7 +243,6 @@
                                         <option value="active">Active</option>
                                         <option value="inactive">Inactive</option>
                                         <option value="draft">Draft</option>
-                                        <option value="pending">Pending</option>
                                     </select>
                                     <x-input-error :messages="$errors->get('status')" class="mt-2" />
                                 </div>
@@ -253,25 +250,7 @@
                         </div>
 
                     </div>
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h3 class="card-title">Store</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <select name="store" class="form-control select2" id="">
-                                        <option value="published">Select a store</option>
-                                        @foreach ($stores as $store)
-                                            <option value="{{ $store->id }}">{{ $store->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <x-input-error :messages="$errors->get('store')" class="mt-2" />
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
 
                     <div class="card mb-3">
                         <div class="card-header">

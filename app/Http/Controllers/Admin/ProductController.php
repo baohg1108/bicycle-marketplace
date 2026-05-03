@@ -26,6 +26,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller implements HasMiddleware
 {
@@ -156,7 +157,7 @@ class ProductController extends Controller implements HasMiddleware
         file_put_contents($chunkPath, file_get_contents($file->getRealPath()));
 
         if ($chunkIndex == $totalChunks - 1) {
-            $finalFileName = \Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $finalFileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
             $finalPath = storage_path('app/private/uploads/' . $finalFileName);
             $output = fopen($finalPath, 'ab');
 

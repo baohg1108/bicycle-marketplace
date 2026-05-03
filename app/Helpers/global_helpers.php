@@ -18,3 +18,12 @@ if (!function_exists('hasPermission')) {
         return auth('admin')->user()->hasAnyPermission($permissions);
     }
 }
+
+
+/** get user */
+if (!function_exists('user')) {
+    function user(): User | null
+    {
+        return Auth::user('web');
+    }
+}

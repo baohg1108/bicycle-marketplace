@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\frontend\KycController;
+use App\Http\Controllers\Frontend\ProductPageController;
 use App\Http\Controllers\Frontend\UserDashboardController;
 use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\StoreController;
@@ -12,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('frontend.home.index');
 });
+
+Route::get('/products', [ProductPageController::class, 'index'])->name('products.index');
+Route::get('/products/{slug}', [ProductPageController::class, 'show'])->name('products.show');
+
+// cart routes
+
 
 
 Route::group([ 'middleware'=>['auth', 'verified']], function(){
@@ -35,28 +42,31 @@ Route::group(['prefix' => 'vendor', 'as' => 'vendor.', 'middleware' => ['auth', 
     // shop Profile
     Route::resource('store-profile', StoreController::class);
     
-     // Product Routes
-        Route::get("/products", [VendorProductController::class, 'index'])->name("products.index");
-        Route::get('/products/{type}/create', [VendorProductController::class, 'create'])->name('products.create');
-        Route::post('/products/{type}/create', [VendorProductController::class, 'store'])->name('products.store');
-        Route::get("/products/physical/{product}/edit", [VendorProductController::class, 'edit'])->name("products.edit");
-        Route::post("/products/physical/{product}/update", [VendorProductController::class, 'update'])->name("products.update");
-        Route::post("/products/images/upload/{product}", [VendorProductController::class, 'uploadImages'])->name("products.images.upload");
-        Route::delete("/products/images/{image}", [VendorProductController::class, 'destroyImage'])->name("products.images.destroy");
-        Route::post("/products/images/reorder", [VendorProductController::class, 'imagesReorder'])->name("products.images.reorder");
+    /** Product Routes */
 
-         /** Product Attributes Routes */
-        Route::post('/products/attributes/{product}/store', [VendorProductController::class, 'storeAttributes'])->name('products.attributes.store');
-        Route::delete('/products/attributes/{product}/{attribute}', [VendorProductController::class, 'destroyAttribute'])->name('products.attributes.destroy');
+Route::get('/products/physical/{product}/edit', [VendorProductController::class, 'edit'])->name('products.edit');
+Route::post('/products/physical/{product}/update', [VendorProductController::class, 'update'])->name('products.update');
 
-        /** Product Variants Routes */
-        Route::post('/products/variants/{product}/update', [VendorProductController::class, 'updateVariants'])->name('products.variants.update');
-          Route::post('/products/digital/file-upload', [VendorProductController::class, 'uploadDigitalProductFile'])->name('digital-products.file.upload');
-        Route::delete('/products/digital/{product}/{file}', [VendorProductController::class, 'destroyDigitalProductFile'])->name('digital-products.file.destroy');
+Route::get('/products/digital/{product}/edit', [VendorProductController::class, 'editDigitalProduct'])->name('digital-products.edit');
+Route::post('/products/digital/file-upload', [VendorProductController::class, 'uploadDigitalProductFile'])->name('digital-products.file.upload');
+Route::delete('/products/digital/{product}/{file}', [VendorProductController::class, 'destroyDigitalProductFile'])->name('digital-products.file.destroy');
 
-        Route::get('/products/digital/{product}/edit', [VendorProductController::class, 'editDigitalProduct'])->name('digital-products.edit');
+Route::get('/products/{type}/create', [VendorProductController::class, 'create'])->name('products.create');
+Route::post('/products/{type}/create', [VendorProductController::class, 'store'])->name('products.store');
 
-         Route::delete('/products/{product}', [VendorProductController::class, 'destroy'])->name('products.destroy');
+Route::get('/products', [VendorProductController::class, 'index'])->name('products.index');
+Route::post('/products/images/upload/{product}', [VendorProductController::class, 'uploadImages'])->name('products.images.upload');
+Route::delete('/products/images/{image}', [VendorProductController::class, 'destroyImage'])->name('products.images.destroy');
+Route::post('/products/images/reorder', [VendorProductController::class, 'imagesReorder'])->name('products.images.reorder');
+
+/** Product Attributes Routes */
+Route::post('/products/attributes/{product}/store', [VendorProductController::class, 'storeAttributes'])->name('products.attributes.store');
+Route::delete('/products/attributes/{product}/{attribute}', [VendorProductController::class, 'destroyAttribute'])->name('products.attributes.destroy');
+
+/** Product Variants Routes */
+Route::post('/products/variants/{product}/update', [VendorProductController::class, 'updateVariants'])->name('products.variants.update');
+
+Route::delete('/products/{product}', [VendorProductController::class, 'destroy'])->name('products.destroy');
 
 });
 

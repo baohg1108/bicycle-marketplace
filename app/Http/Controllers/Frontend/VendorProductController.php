@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\ProductStoreRequest;
-use App\Http\Requests\Admin\ProductUpdateRequest;
+use App\Http\Requests\Frontend\ProductStoreRequest;
+use App\Http\Requests\Frontend\ProductUpdateRequest;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
 use App\Models\Brand;
@@ -26,21 +26,15 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class VendorProductController extends Controller
 {
     use FileUploadTrait;
 
-    // static function Middleware(): array
-    // {
-    //     return [
-    //         new Middleware('permission:Product Management')
-    //     ];
-    // }
-
     function index(): View
     {
-        $products = Product::orderBy('id', 'desc')->paginate(30);
+        $products = Product::where('store_id', user()->store->id)->latest()->paginate(30);
         return view('vendor-dashboard.product.index', compact('products'));
     }
 
@@ -73,8 +67,8 @@ class VendorProductController extends Controller
         $product->manage_stock = $request->has('manage_stock') ? 'yes' : 'no';
         $product->in_stock = $request->stock_status == 'in_stock' ? 1 : 0;
         $product->status = $request->status;
-        $product->approved_status = 'approved';
-        $product->store_id = $request->store;
+        $product->approved_status = 'pending';
+        $product->store_id = user()->store->id;
         $product->brand_id = $request->brand;
         $product->is_featured = $request->has('is_featured') ? 1 : 0;
         $product->is_hot = $request->has('is_hot') ? 1 : 0;
@@ -109,7 +103,8 @@ class VendorProductController extends Controller
     {
 
         $product = Product::findOrFail($id);
-        // dd($product->attributes);
+        if($product->store_id !== user()->store->id) abort(404);
+
         $productCategoryIds = $product->categories->pluck('id')->toArray();
         $productTagIds = $product->tags->pluck('id')->toArray();
         $stores = Store::select(['name', 'id'])->get();
@@ -128,6 +123,8 @@ class VendorProductController extends Controller
 
         $product = Product::findOrFail($id);
         if ($product->product_type != 'digital') abort(404);
+        if($product->store_id !== user()->store->id) abort(404);
+
         // dd($product->attributes);
         $productCategoryIds = $product->categories->pluck('id')->toArray();
         $productTagIds = $product->tags->pluck('id')->toArray();
@@ -141,6 +138,9 @@ class VendorProductController extends Controller
 
     function uploadDigitalProductFile(Request $request)
     {
+        $product = Product::findOrFail($request->product_id);
+        if($product->store_id !== user()->store->id) abort(404);
+
         $file = $request->file('file');
         $chunkIndex = $request->dzchunkindex;
         $totalChunks = $request->dztotalchunkcount;
@@ -156,7 +156,7 @@ class VendorProductController extends Controller
         file_put_contents($chunkPath, file_get_contents($file->getRealPath()));
 
         if ($chunkIndex == $totalChunks - 1) {
-            $finalFileName = \Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $finalFileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
             $finalPath = storage_path('app/private/uploads/' . $finalFileName);
             $output = fopen($finalPath, 'ab');
 
@@ -265,6 +265,9 @@ class VendorProductController extends Controller
     function destroyDigitalProductFile(int $productId, int $id)
     {
         try {
+            $product = Product::findOrFail($productId);
+            if($product->store_id !== user()->store->id) abort(404);
+
             $productFile = ProductFile::where('id', $id)->where('product_id', $productId)->firstOrFail();
             // delete from storage
             if (Storage::disk('local')->exists($productFile->path)) {
@@ -281,6 +284,8 @@ class VendorProductController extends Controller
     function update(ProductUpdateRequest $request, int $id)
     {
         $product = Product::findOrFail($id);
+        if($product->store_id !== user()->store->id) abort(404);
+
         $product->name = $request->name;
         $product->slug = $request->slug;
         $product->short_description = $request->short_description;
@@ -294,8 +299,7 @@ class VendorProductController extends Controller
         $product->manage_stock = $request->has('manage_stock') ? 'yes' : 'no';
         $product->in_stock = $request->stock_status == 'in_stock' ? 1 : 0;
         $product->status = $request->status;
-        $product->approved_status = $request->approved_status;
-        $product->store_id = $request->store;
+        $product->store_id = user()->store->id;
         $product->brand_id = $request->brand;
         $product->is_featured = $request->has('is_featured') ? 1 : 0;
         $product->is_hot = $request->has('is_hot') ? 1 : 0;
@@ -320,6 +324,7 @@ class VendorProductController extends Controller
 
     function uploadImages(Request $request, Product $product)
     {
+        if($product->store_id !== user()->store->id) abort(404);
 
         $request->validate([
             'file' => ['required', 'image', 'max:3048']
@@ -344,6 +349,9 @@ class VendorProductController extends Controller
     function destroyImage(int $id)
     {
         $image = ProductImage::findOrFail($id);
+        $product = Product::findOrFail($image->product_id);
+        if($product->store_id !== user()->store->id) abort(404);
+
         $this->deleteFile($image->path);
         $image->delete();
         return response()->json(['status' => 'success', 'message' => 'Image deleted successfully']);
@@ -359,6 +367,8 @@ class VendorProductController extends Controller
 
     function storeAttributes(Request $request, Product $product)
     {
+        if($product->store_id !== user()->store->id) abort(404);
+
         $request->validate([
             'attribute_name' => ['required', 'string', 'max:255'],
             'attribute_type' => ['required', 'string', 'in:text,color'],
@@ -388,6 +398,8 @@ class VendorProductController extends Controller
 
     function createNewAttribute(Request $request, Product $product)
     {
+        if($product->store_id !== user()->store->id) abort(404);
+
         $attribute = new Attribute();
         $attribute->name = $request->attribute_name;
         $attribute->type = $request->attribute_type;
@@ -398,6 +410,8 @@ class VendorProductController extends Controller
 
     function updateExistingAttribute(Request $request, Product $product)
     {
+        if($product->store_id !== user()->store->id) abort(404);
+
         $attribute = Attribute::findOrFail($request->attribute_id);
         $attribute->name = $request->attribute_name;
         $attribute->type = $request->attribute_type;
@@ -412,6 +426,8 @@ class VendorProductController extends Controller
 
     function clearAttributeData(Attribute $attribute, Product $product)
     {
+        if($product->store_id !== user()->store->id) abort(404);
+
         DB::table('product_attribute_values')
             ->where('product_id', $product->id)
             ->where('attribute_id', $attribute->id)
@@ -422,6 +438,8 @@ class VendorProductController extends Controller
 
     function addAttributesValue(Attribute $attribute, Request $request, Product $product)
     {
+        if($product->store_id !== user()->store->id) abort(404);
+
         $labels = $request->label ?? [];
 
         foreach ($labels as $index => $label) {
@@ -444,6 +462,8 @@ class VendorProductController extends Controller
 
     function buildSuccessResponse(Product $product)
     {
+        if($product->store_id !== user()->store->id) abort(404);
+
         $product->refresh();
 
         $attributes = $product->attributeWithValues;
@@ -472,6 +492,8 @@ class VendorProductController extends Controller
     {
         try {
             $product = Product::findOrFail($productId);
+            if($product->store_id !== user()->store->id) abort(404);
+
             $attribute = Attribute::findOrFail($attributeId);
 
             $this->clearAttributeData($attribute, $product);
@@ -508,6 +530,8 @@ class VendorProductController extends Controller
 
     function regenerateProductVariants(Product $product)
     {
+        if($product->store_id !== user()->store->id) abort(404);
+
         // clear existing variants
         $this->clearExistingVariants($product);
 
@@ -526,6 +550,8 @@ class VendorProductController extends Controller
 
     function getAttributeGroups(Product $product)
     {
+        if($product->store_id !== user()->store->id) abort(404);
+
         $groupedAttributes = DB::table('product_attribute_values')
             ->where('product_id', $product->id)
             ->get()->groupBy('attribute_id');
@@ -634,7 +660,8 @@ class VendorProductController extends Controller
 
     function destroy(Product $product)
     {
-        if (Auth::user()->hasRole('Super Admin') || hasPermission(['Product Management'])) {
+
+        if (Auth::user()->store->id == $product->store_id) {
             $product->delete();
             notyf()->success('Product deleted successfully');
             return response()->json(['status' => 'success', 'message' => 'Product deleted successfully']);
