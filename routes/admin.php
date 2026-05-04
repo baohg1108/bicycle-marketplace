@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\FlashSaleController;
 use App\Http\Controllers\Admin\HeroBannerController;
 use App\Http\Controllers\Admin\KycRequestController;
+use App\Http\Controllers\Admin\PaymentSettingController;
 use App\Http\Controllers\Admin\PopularCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductSectionController;
@@ -137,6 +138,19 @@ Route::middleware('auth:admin')
 
         /**Shipping Routes */
         Route::resource('/shipping-rules', ShippingRuleController::class);
+
+        // Payment Settings Routes
+        Route::get('/payment-settings', [PaymentSettingController::class, 'index'])->name('payment-settings.index');
+        Route::put('/paypal-settings', [PaymentSettingController::class, 'paypalSettings'])->name('paypal-settings.store');
+        Route::get('/stripe-settings', [PaymentSettingController::class, 'stripe'])->name('stripe-settings.index');
+        Route::put('/stripe-settings', [PaymentSettingController::class, 'stripeSettings'])->name('stripe-settings.store');
+        Route::get('/razorpay-settings', [PaymentSettingController::class, 'razorpay'])->name('razorpay-settings.index');
+        Route::put('/razorpay-settings', [PaymentSettingController::class, 'razorpaySettings'])->name('razorpay-settings.store');
+
+        // paypal routes
+        Route::get("/paypal/payment", [PaymentSettingController::class, 'paypalPayment'])->name('paypal.payment');
+        Route::get("/paypal/success", [PaymentSettingController::class, 'paypalSuccess'])->name('paypal.success');
+        Route::get("/paypal/cancel", [PaymentSettingController::class, 'paypalCancel'])->name('paypal.cancel');
 
         //  Slider Routes
         Route::resource("/sliders", SliderController::class);
