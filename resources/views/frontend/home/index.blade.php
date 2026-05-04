@@ -22,8 +22,6 @@
             </a>
         </div>
     </section>
-    <!--CTA section end-->
-    @include('frontend.home.sections.special-products')
     <!-- special products end -->
     @include('frontend.home.sections.four-col-products')
     <!--End 4 columns-->

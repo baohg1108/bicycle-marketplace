@@ -7,6 +7,7 @@ use App\Models\FlashSale;
 use App\Models\HeroBanner;
 use App\Models\PopularCategory;
 use App\Models\Product;
+use App\Models\ProductSection;
 use App\Models\Slider;
 use Illuminate\Contracts\View\View;
 
@@ -23,8 +24,26 @@ class HomeController extends Controller
         $popularProducts      = $this->productsByCategory($popularCategoriesIds);
         $flashSale            = FlashSale::first();
         $flashSaleProducts    = Product::whereIn("id", $flashSale->products)->get();
+        $productSections      = ProductSection::first();
 
-        return view("frontend.home.index", compact('featuredCategories', 'sliders', "heroBanner", "popularCategories", "popularProducts", "flashSale", "flashSaleProducts"));
+        $productSectionsIds = [
+            $productSections?->category_one,
+            $productSections?->category_two,
+            $productSections?->category_three,
+        ];
+
+        // $hotProducts = Product::with('primaryImage')->withAvg('reviews', 'rating')->whereIsHot(true)->latest()->take(4)->get();
+        // $newProducts = Product::with('primaryImage')->withAvg('reviews', 'rating')->whereIsNew(true)->latest()->take(4)->get();
+        // $featuredProducts = Product::with('primaryImage')->withAvg('reviews', 'rating')->whereIsFeatured(true)->latest()->take(4)->get();
+        // $topRatedProducts = Product::with('primaryImage')->whereHas('reviews')->withAvg('reviews', 'rating')->orderBy('reviews_avg_rating', 'desc')->take(4)->get();
+
+        $hotProducts      = Product::with('primaryImage')->whereIsHot(true)->latest()->take(4)->get();
+        $newProducts      = Product::with('primaryImage')->whereIsNew(true)->latest()->take(4)->get();
+        $featuredProducts = Product::with('primaryImage')->whereIsFeatured(true)->latest()->take(4)->get();
+
+        $productSectionsProducts = $this->productsByCategory($productSectionsIds, false);
+
+        return view("frontend.home.index", compact('featuredCategories', 'sliders', "heroBanner", "popularCategories", "popularProducts", "flashSale", "flashSaleProducts", "productSections", "productSectionsProducts", "hotProducts", "newProducts", "featuredProducts"));
     }
 
     public function productsByCategory(array $categoryIds)
