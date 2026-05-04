@@ -25,6 +25,24 @@
                     <x-input-error :messages="$errors->get('site_phone')" class="mt-2" />
                 </div>
 
+                <div class="col-md-6">
+                    <div class="form-label">Default Currency</div>
+                    <select name="size_currency" id="" class="form-control">
+                        @foreach (config('currencies') as $key => $currency)
+                            <option @selected($key == config('settings.size_currency')) value="{{ $key }}">{{ $currency }}</option>
+                        @endforeach
+
+                    </select>
+                    <x-input-error :messages="$errors->get('size_currency')" class="mt-2" />
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-label">Currency Icon</div>
+                    <input type="text" class="form-control" value="{{ config('settings.size_currency_icon') }}"
+                        name="size_currency_icon">
+                    <x-input-error :messages="$errors->get('size_currency_icon')" class="mt-2" />
+                </div>
+
                 <div class="btn-list justify-content-end mt-5">
                     <button type="submit" class="btn btn-primary btn-2"> Submit </button>
                 </div>
