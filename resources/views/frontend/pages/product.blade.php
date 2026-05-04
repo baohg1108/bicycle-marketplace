@@ -242,9 +242,9 @@
                         if (matchingVariant.in_stock == 0 || matchingVariant.in_stock == null || matchingVariant
                             .quantity < 1 && matchingVariant.manage_stock == 1) {
                             html = `<div
-            class="product-price modal-price primary-color float-left">
-            <span class="current-price text-brand">Out Of Stock</span>
-            </div>`
+                             class="product-price modal-price primary-color float-left">
+                                <span class="current-price text-brand">Out Of Stock</span>
+                            </div>`
 
                             $('.modal-price').replaceWith(html);
 
