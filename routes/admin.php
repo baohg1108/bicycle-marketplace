@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\FlashSaleController;
 use App\Http\Controllers\Admin\HeroBannerController;
 use App\Http\Controllers\Admin\KycRequestController;
 use App\Http\Controllers\Admin\PopularCategoryController;
@@ -140,6 +141,10 @@ Route::middleware('auth:admin')
         Route::resource("/sliders", SliderController::class);
         Route::resource("/hero-banners", HeroBannerController::class);
         Route::resource("/popular-categories", PopularCategoryController::class);
+
+        // Flash Sales Routes
+        Route::get('get-products', [FlashSaleController::class, 'getProducts'])->name('flash-sales.get-products');
+        Route::resource('flash-sales', FlashSaleController::class);
 
         // setting
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
