@@ -4,6 +4,7 @@
 
 use App\Models\Category;
 use App\Models\User;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
 
 if (! function_exists('hasPermission')) {
@@ -31,5 +32,12 @@ if (! function_exists('getNestedCategories')) {
     {
         $categories = Category::getNested();
         return $categories;
+    }
+}
+/** get cart total */
+if (!function_exists('cartCount')) {
+    function cartCount(): int
+    {
+        return Cart::where('user_id', user()?->id)->count();
     }
 }

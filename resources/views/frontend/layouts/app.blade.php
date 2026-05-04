@@ -11,6 +11,7 @@
     <meta property="og:type" content="" />
     <meta property="og:url" content="" />
     <meta property="og:image" content="" />
+    <meta name="csrf_token" content="{{ csrf_token() }}">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -84,13 +85,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"
         integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- Template  JS -->
     <script src="{{ asset('assets/frontend/dist/js/main.js') }}"></script>
     <script src="{{ asset('assets/frontend/dist/js/shop.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
-    @stack('scripts')
     <script src="{{ asset('assets/frontend/dist/js/frontend.js') }}"></script>
+    {{-- @include('frontend.layouts.scripts') --}}
+    @stack('scripts')
+
 </body>
 
 </html>

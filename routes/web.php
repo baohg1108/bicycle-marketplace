@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\HomeController;
-use App\Http\Controllers\Frontend\KycController;       
+use App\Http\Controllers\Frontend\KycController;
 use App\Http\Controllers\Frontend\ProductPageController;
 use App\Http\Controllers\Frontend\UserDashboardController;
 use App\Http\Controllers\Frontend\ProfileController;
@@ -18,7 +18,13 @@ Route::get('/products/{slug}', [ProductPageController::class, 'show'])->name('pr
 
 // Cart routes
 ROute::get('/cart', [CartController::class, 'index'])->name('cart.index');
- Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+Route::put('/update-cart', [CartController::class, 'updateCart'])->name('cart.update');
+Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+
+Route::post('/cart/coupon', [CartController::class, 'applyCoupon'])->name('cart.coupon');
+Route::delete('/cart/coupon/remove', [CartController::class, 'destroyCoupon'])->name('cart.coupon.destroy');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
@@ -31,8 +37,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // KYC routes
     Route::get('/kyc-verification', [KycController::class, 'index'])->name('kyc.index');
     Route::post('/kyc-verification', [KycController::class, 'store'])->name('kyc.store');
-
-
 });
 
 // Vendor routes
