@@ -226,7 +226,6 @@
                 </li>
 
                 {{-- Ecommerce: ========================================== Categories + Tags + Brand ========================================== --}}
-
                 @if (hasPermission(['Category Management', 'Tags Management', 'Brands Management']))
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
@@ -238,13 +237,7 @@
                         </a>
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
-                                @if (hasPermission(['Category Management']))
-                                    <div class="dropdown-menu-column">
-                                        <a class="dropdown-item" href="{{ route('admin.categories.index') }}">
-                                            Categories
-                                        </a>
-                                    </div>
-                                @endif
+                                {{-- Products --}}
                                 @if (hasPermission(['Tags Management']))
                                     <div class="dropdown-menu-column">
                                         <a class="dropdown-item" href="{{ route('admin.products.index') }}">
@@ -252,7 +245,23 @@
                                         </a>
                                     </div>
                                 @endif
-
+                                {{-- Flash Sales --}}
+                                @if (hasPermission(['Tags Management']))
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item" href="{{ route('admin.flash-sales.index') }}">
+                                            Flash Sales
+                                        </a>
+                                    </div>
+                                @endif
+                                {{-- Categories --}}
+                                @if (hasPermission(['Category Management']))
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item" href="{{ route('admin.categories.index') }}">
+                                            Categories
+                                        </a>
+                                    </div>
+                                @endif
+                                {{-- Product Tags --}}
                                 @if (hasPermission(['Tags Management']))
                                     <div class="dropdown-menu-column">
                                         <a class="dropdown-item" href="{{ route('admin.tags.index') }}">
@@ -260,6 +269,7 @@
                                         </a>
                                     </div>
                                 @endif
+                                {{-- Product Brands --}}
                                 @if (hasPermission(['Brands Management']))
                                     <div class="dropdown-menu-column">
                                         <a class="dropdown-item" href="{{ route('admin.brands.index') }}">

@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\FlashSale;
 use App\Models\HeroBanner;
 use App\Models\PopularCategory;
 use App\Models\Product;
@@ -20,8 +21,10 @@ class HomeController extends Controller
         $popularCategoriesIds = PopularCategory::first()?->categories ?? [];
         $popularCategories    = Category::whereIn("id", $popularCategoriesIds)->get();
         $popularProducts      = $this->productsByCategory($popularCategoriesIds);
+        $flashSale            = FlashSale::first();
+        $flashSaleProducts    = Product::whereIn("id", $flashSale->products)->get();
 
-        return view("frontend.home.index", compact('featuredCategories', 'sliders', "heroBanner", "popularCategories", "popularProducts"));
+        return view("frontend.home.index", compact('featuredCategories', 'sliders', "heroBanner", "popularCategories", "popularProducts", "flashSale", "flashSaleProducts"));
     }
 
     public function productsByCategory(array $categoryIds)
