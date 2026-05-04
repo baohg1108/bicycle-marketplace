@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\HeroBannerController;
 use App\Http\Controllers\Admin\KycRequestController;
 use App\Http\Controllers\Admin\PopularCategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductSectionController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ShippingRuleController;
@@ -145,6 +146,9 @@ Route::middleware('auth:admin')
         // Flash Sales Routes
         Route::get('get-products', [FlashSaleController::class, 'getProducts'])->name('flash-sales.get-products');
         Route::resource('flash-sales', FlashSaleController::class);
+
+        // Product section
+        Route::resource('product-sections', ProductSectionController::class);
 
         // setting
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
