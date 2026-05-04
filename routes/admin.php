@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\FlashSaleController;
 use App\Http\Controllers\Admin\HeroBannerController;
 use App\Http\Controllers\Admin\KycRequestController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Admin\PopularCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ShippingRuleController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserRoleController;
@@ -128,6 +130,12 @@ Route::middleware('auth:admin')
         Route::get('/products/digital/{product}/edit', [ProductController::class, 'editDigitalProduct'])->name('digital-products.edit');
 
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+        // coupon routes
+        Route::resource("/coupons", CouponController::class);
+
+        /**Shipping Routes */
+        Route::resource('/shipping-rules', ShippingRuleController::class);
 
         //  Slider Routes
         Route::resource("/sliders", SliderController::class);

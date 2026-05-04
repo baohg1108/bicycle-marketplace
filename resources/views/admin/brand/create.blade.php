@@ -10,7 +10,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.brands.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.brands.store') }}" method="POST" enctype="multipart/form-data"
+                    class="brand-form">
                     @csrf
                     <div class="row">
                         <div class="col-md-3">
@@ -31,11 +32,12 @@
 
                         <div class="col-md-12">
                             <div class="mb-2">
-                            <label class="form-check from-switch form-switch-3">
-                                <input class="form-check-input" type="checkbox" checked="" name="status" id="status"></input>
-                                <span class="form-check-label">Active</span>
-                        </label>
-                        </div>
+                                <label class="form-check from-switch form-switch-3">
+                                    <input class="form-check-input" type="checkbox" checked="" name="status"
+                                        id="status"></input>
+                                    <span class="form-check-label">Active</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
 
@@ -49,9 +51,9 @@
     </div>
 @endsection
 
-@push("scripts")
-<script>
-     $(document).ready(function() {
+@push('scripts')
+    <script>
+        $(document).ready(function() {
             $.uploadPreview({
                 input_field: "#image-upload", // Default: .image-upload
                 preview_box: "#image-preview", // Default: .image-preview
@@ -61,6 +63,5 @@
                 no_label: false // Default: false
             });
         });
-</script>
-    
+    </script>
 @endpush

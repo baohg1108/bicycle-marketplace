@@ -203,10 +203,10 @@
                             </tbody>
                         </table>
                     </div>
-                    {{-- @if (cartCount() > 0)
+                    @if (cartCount() > 0)
                         <a href="{{ route('checkout.index') }}" class="btn w-100">Proceed To CheckOut<i
                                 class="fi-rs-sign-out ml-15"></i></a>
-                    @endif --}}
+                    @endif
                 </div>
 
             </div>

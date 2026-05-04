@@ -277,6 +277,22 @@
                                         </a>
                                     </div>
                                 @endif
+
+                                @if (hasPermission(['Brands Management']))
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item" href="{{ route('admin.coupons.index') }}">
+                                            Coupons
+                                        </a>
+                                    </div>
+                                @endif
+
+                                @if (hasPermission(['Brands Management']))
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item" href="{{ route('admin.shipping-rules.index') }}">
+                                            Shipping Rules
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </li>
