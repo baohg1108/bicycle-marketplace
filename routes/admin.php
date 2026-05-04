@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HeroBannerController;
 use App\Http\Controllers\Admin\KycRequestController;
+use App\Http\Controllers\Admin\PopularCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
@@ -130,6 +131,7 @@ Route::middleware('auth:admin')
         //  Slider Routes
         Route::resource("/sliders", SliderController::class);
         Route::resource("/hero-banners", HeroBannerController::class);
+        Route::resource("/popular-categories", PopularCategoryController::class);
 
         // setting
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
