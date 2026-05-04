@@ -1,17 +1,17 @@
 <?php
 namespace App\Providers;
 
-use App\Services\SettingSevice;
+use App\Services\SettingService;
 use Illuminate\Support\ServiceProvider;
 
-class SettingSeviceProvider extends ServiceProvider
+class SettingServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
      */
     public function register(): void
     {
-        $this->app->singleton(SettingSevice::class, fn() => new SettingSevice());
+        $this->app->singleton(SettingService::class, fn() => new SettingService());
     }
 
     /**
@@ -19,7 +19,7 @@ class SettingSeviceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $settings = $this->app->make(SettingSevice::class);
+        $settings = $this->app->make(SettingService::class);
         $settings->setSettings();
     }
 }

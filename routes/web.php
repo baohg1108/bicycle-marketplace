@@ -7,9 +7,9 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\KycController;
 use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Controllers\Frontend\ProductPageController;
-use App\Http\Controllers\Frontend\UserDashboardController;
 use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\StoreController;
+use App\Http\Controllers\Frontend\UserDashboardController;
 use App\Http\Controllers\Frontend\VendorDashboardController;
 use App\Http\Controllers\Frontend\VendorProductController;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +19,14 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/products', [ProductPageController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [ProductPageController::class, 'show'])->name('products.show');
 
+Route::get('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+Route::get('/payment/cancel', [PaymentController::class, 'paymentCancel'])->name('payment.cancel');
 
+Route::get('/paypal/success', [PaymentController::class, 'paypalSuccess'])->name('paypal.success');
+Route::get('/paypal/cancel', [PaymentController::class, 'paypalCancel'])->name('paypal.cancel');
+
+Route::get('/stripe/success', [PaymentController::class, 'stripeSuccess'])->name('stripe.success');
+Route::get('/stripe/cancel', [PaymentController::class, 'stripeCancel'])->name('stripe.cancel');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
@@ -34,7 +41,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // KYC routes
     Route::get('/kyc-verification', [KycController::class, 'index'])->name('kyc.index');
     Route::post('/kyc-verification', [KycController::class, 'store'])->name('kyc.store');
-
 
     // Cart routes
     ROute::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -52,6 +58,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // payment
     Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
+    Route::get('/paypal/payment', [PaymentController::class, 'paypalPayment'])->name('paypal.payment');
+    Route::get('/stripe/payment', [PaymentController::class, 'stripePayment'])->name('stripe.payment');
+
+    /** Razorpay Routes */
+    Route::get('/razopay/reditect', [PaymentController::class, 'razorpayRedirect'])->name('razorpay.redirect');
+    Route::post('/razorpay/payment', [PaymentController::class, 'razorpayPayment'])->name('razorpay.payment');
 });
 
 // Vendor routes

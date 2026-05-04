@@ -10,75 +10,21 @@
                     <h4>Select Payment </h4>
                     <div class="row mt-10">
                         <div class="col-6 col-md-4 col-lg-6 col-xl-3 wow fadeInUp">
-                            <a href="#" class="wsus__payment_method" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img src="assets/imgs/payment_1.png" alt="payment" class="img-fluid w-100">
+                            <a href="{{ route('paypal.payment') }}" class="wsus__payment_method">
+                                <img src="{{ asset('assets/frontend/dist/imgs/paypal.png') }}" alt="payment"
+                                    class="img-fluid w-100">
                             </a>
                         </div>
                         <div class="col-6 col-md-4 col-lg-6 col-xl-3 wow fadeInUp">
-                            <a href="#" class="wsus__payment_method" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img src="assets/imgs/payment_2.png" alt="payment" class="img-fluid w-100">
+                            <a href="{{ route('stripe.payment') }}" class="wsus__payment_method">
+                                <img src="{{ asset('assets/frontend/dist/imgs/stripe.png') }}" alt="payment"
+                                    class="img-fluid w-100">
                             </a>
                         </div>
                         <div class="col-6 col-md-4 col-lg-6 col-xl-3 wow fadeInUp">
-                            <a href="#" class="wsus__payment_method" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img src="assets/imgs/payment_3.png" alt="payment" class="img-fluid w-100">
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-6 col-xl-3 wow fadeInUp">
-                            <a href="#" class="wsus__payment_method" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img src="assets/imgs/payment_4.png" alt="payment" class="img-fluid w-100">
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-6 col-xl-3 wow fadeInUp">
-                            <a href="#" class="wsus__payment_method" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img src="assets/imgs/payment_5.png" alt="payment" class="img-fluid w-100">
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-6 col-xl-3 wow fadeInUp">
-                            <a href="#" class="wsus__payment_method" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img src="assets/imgs/payment_6.png" alt="payment" class="img-fluid w-100">
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-6 col-xl-3 wow fadeInUp">
-                            <a href="#" class="wsus__payment_method" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img src="assets/imgs/payment_7.png" alt="payment" class="img-fluid w-100">
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-6 col-xl-3 wow fadeInUp">
-                            <a href="#" class="wsus__payment_method" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img src="assets/imgs/payment_12.png" alt="payment" class="img-fluid w-100">
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-6 col-xl-3 wow fadeInUp">
-                            <a href="#" class="wsus__payment_method" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img src="assets/imgs/payment_8.png" alt="payment" class="img-fluid w-100">
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-6 col-xl-3 wow fadeInUp">
-                            <a href="#" class="wsus__payment_method" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img src="assets/imgs/payment_9.png" alt="payment" class="img-fluid w-100">
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-6 col-xl-3 wow fadeInUp">
-                            <a href="#" class="wsus__payment_method" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img src="assets/imgs/payment_10.png" alt="payment" class="img-fluid w-100">
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-6 col-xl-3 wow fadeInUp">
-                            <a href="#" class="wsus__payment_method" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img src="assets/imgs/payment_11.png" alt="payment" class="img-fluid w-100">
+                            <a href="{{ route('razorpay.redirect') }}" class="wsus__payment_method">
+                                <img src="{{ asset('assets/frontend/dist/imgs/zaropay.png') }}" alt="payment"
+                                    class="img-fluid w-100">
                             </a>
                         </div>
                     </div>
@@ -97,8 +43,8 @@
                                     @endphp
                                     <li>
                                         <a href="{{ route('products.show', $cartItem->product->slug) }}" class="img">
-                                            <img src="{{ asset($cartItem->product?->primaryImage?->path) }}"
-                                                alt="product" class="img-fluid w-100">
+                                            <img src="{{ asset($cartItem->product?->primaryImage?->path) }}" alt="product"
+                                                class="img-fluid w-100">
                                         </a>
                                         <div class="text cart-item-title">
                                             <a style="font-size: 16px; font-weight: 700;"

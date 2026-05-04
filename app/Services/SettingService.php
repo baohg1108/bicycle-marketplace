@@ -4,22 +4,22 @@ namespace App\Services;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
 
-class SettingSevice {
-
-    function getSettings()
+class SettingService
+{
+    public function getSettings()
     {
-        return Cache::rememberForever('settings', function() {
+        return Cache::rememberForever('settings', function () {
             return Setting::pluck('value', 'key')->toArray();
         });
     }
 
-    function setSettings()
+    public function setSettings()
     {
         $settings = $this->getSettings();
         config()->set('settings', $settings);
     }
 
-    function clearCashedSettings()
+    public function clearCashedSettings()
     {
         Cache::forget('settings');
     }
