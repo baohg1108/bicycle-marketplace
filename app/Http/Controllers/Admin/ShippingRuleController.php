@@ -3,20 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CouponStoreRequest;
-use App\Http\Requests\Admin\CouponUpdateRequest;
-use App\Models\Coupon;
+use App\Http\Requests\Admin\ShippingRuleStoreRequest;
+use App\Models\ShippingRule;
 use App\Services\AlertService;
-use Illuminate\Console\View\Components\Alert;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class CouponController extends Controller implements HasMiddleware
+class ShippingRuleController extends Controller implements HasMiddleware
 {
 
     static function Middleware(): array
@@ -31,8 +28,8 @@ class CouponController extends Controller implements HasMiddleware
      */
     public function index(): View
     {
-        $coupons = Coupon::paginate(25);
-        return view('admin.coupon.index', compact('coupons'));
+        $shippingRules = ShippingRule::all();
+        return view('admin.shipping-rule.index', compact('shippingRules'));
     }
 
     /**
@@ -40,53 +37,45 @@ class CouponController extends Controller implements HasMiddleware
      */
     public function create(): View
     {
-        return view('admin.coupon.create');
+        return view('admin.shipping-rule.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CouponStoreRequest $request): RedirectResponse
+    public function store(ShippingRuleStoreRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-
-        Coupon::create($data);
-
+        ShippingRule::create($request->validated());
         AlertService::created();
-
-        return redirect()->route('admin.coupons.index');
+        return redirect()->route('admin.shipping-rules.index');
     }
 
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Coupon $coupon): View
+    public function edit(ShippingRule $shippingRule): View
     {
-        return view('admin.coupon.edit', compact('coupon'));
+        return view('admin.shipping-rule.edit', compact('shippingRule'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CouponUpdateRequest $request, Coupon $coupon)
+    public function update(ShippingRuleStoreRequest $request, ShippingRule $shippingRule): RedirectResponse
     {
-        $data = $request->validated();
-
-        $coupon->update($data);
-
+        $shippingRule->update($request->validated());
         AlertService::updated();
-
-        return redirect()->route('admin.coupons.index');
+        return redirect()->route('admin.shipping-rules.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Coupon $coupon): JsonResponse
+    public function destroy(ShippingRule $shippingRule): JsonResponse
     {
-        $coupon->delete();
-
+        $shippingRule->delete();
+        AlertService::deleted();
         return response()->json(['status' => 'success', 'message' => 'Deleted Successfully']);
     }
 }

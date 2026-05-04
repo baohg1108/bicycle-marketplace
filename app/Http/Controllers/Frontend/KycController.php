@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\frontend;
+namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kyc;
@@ -15,17 +15,17 @@ class KycController extends Controller
 {
     use FileUploadTrait;
 
-    function index() : View | RedirectResponse
+    function index(): View | RedirectResponse
     {
-         if(auth('web')->user()->kyc?->status == 'approved' || auth('web')->user()->kyc?->status == 'pending') {
+        if (auth('web')->user()->kyc?->status == 'approved' || auth('web')->user()->kyc?->status == 'pending') {
             return redirect()->route('vendor.dashboard');
         }
         return view('frontend.page.kyc');
     }
 
-   
 
-     function store(Request $request): RedirectResponse
+
+    function store(Request $request): RedirectResponse
     {
         $request->validate([
             'full_name' => ['required', 'max:255', 'string'],
@@ -45,7 +45,7 @@ class KycController extends Controller
         $kyc->full_name = $request->full_name;
         $kyc->status = 'pending';
         $kyc->user_id = auth('web')->user()->id;
-        $kyc->date_of_birth = $request->date_of_birth ;
+        $kyc->date_of_birth = $request->date_of_birth;
         $kyc->gender = $request->gender;
         $kyc->full_address = $request->full_address;
         $kyc->document_type = $request->document_type;
@@ -54,7 +54,7 @@ class KycController extends Controller
 
         $kyc->save();
 
-        
+
 
         AlertService::created('Your KYC has been submitted successfully! Please wait for admin approval.');
 

@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -48,13 +50,22 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    function kyc() : HasOne
+    function kyc(): HasOne
     {
         return $this->hasOne(Kyc::class);
     }
 
-    function store() : HasOne
+    function store(): HasOne
     {
         return $this->hasOne(Store::class, 'seller_id');
+    }
+    function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    function products(): HasManyThrough
+    {
+        return $this->hasManyThrough(Product::class, Store::class, 'seller_id', 'store_id', 'id', 'id');
     }
 }
