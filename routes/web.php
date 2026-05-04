@@ -5,6 +5,7 @@ use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\KycController;
+use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Controllers\Frontend\ProductPageController;
 use App\Http\Controllers\Frontend\UserDashboardController;
 use App\Http\Controllers\Frontend\ProfileController;
@@ -50,7 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/billing-info', [CheckoutController::class, 'billingInfo'])->name('checkout.billinginfo.store');
 
     // payment
-    // Route::get('/payment', [CheckoutController::class, 'index'])->name('payment.index');
+    Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
 });
 
 // Vendor routes
